@@ -1,4 +1,4 @@
-package dk.fitfit.racetracker
+package dk.fitfit.runtracker
 
 import org.junit.Test
 
