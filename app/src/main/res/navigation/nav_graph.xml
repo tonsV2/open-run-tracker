@@ -27,6 +27,17 @@
         android:name="dk.fitfit.runtracker.ui.RunListFragment"
         android:label="@string/run_list_fragment_label"
         tools:layout="@layout/fragment_run_list">
+
+        <action
+            android:id="@+id/action_RunListFragment_to_MapFragment"
+            app:destination="@id/MapFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/MapFragment"
+        android:name="dk.fitfit.runtracker.ui.MapFragment"
+        android:label="@string/map_fragment_label"
+        tools:layout="@layout/fragment_map">
     </fragment>
 
     <fragment

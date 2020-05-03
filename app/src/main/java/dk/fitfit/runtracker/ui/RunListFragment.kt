@@ -5,8 +5,10 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dk.fitfit.runtracker.R
+import dk.fitfit.runtracker.ui.MapFragment.Companion.EXTRA_ID
 import dk.fitfit.runtracker.viewmodels.RunListViewModel
 import kotlinx.android.synthetic.main.fragment_run_list.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -23,7 +25,7 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
 
         val adapter = RunListAdapter {
             val bundle = bundleOf(EXTRA_ID to it.id)
-//            findNavController().navigate(R.id.action_ExerciseListFragment_to_AddExerciseFragment, bundle)
+            findNavController().navigate(R.id.action_RunListFragment_to_MapFragment, bundle)
         }
 
         runRecyclerView.adapter = adapter
@@ -31,10 +33,5 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
         runListViewModel.runs.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
-    }
-
-    // TODO: Move to receiver
-    companion object {
-        const val EXTRA_ID = "run-id"
     }
 }
