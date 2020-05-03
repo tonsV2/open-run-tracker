@@ -9,7 +9,7 @@ import java.util.UUID
 
 @Dao
 interface LocationDao {
-    @Query("SELECT * FROM LocationEntity WHERE id = :runId ORDER BY dateTime DESC")
+    @Query("SELECT * FROM LocationEntity WHERE runId = :runId ORDER BY dateTime DESC")
     fun getLocations(runId: Long): LiveData<List<LocationEntity>>
 
     @Insert
