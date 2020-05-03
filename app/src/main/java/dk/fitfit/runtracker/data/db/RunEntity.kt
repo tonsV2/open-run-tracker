@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 @Entity
 data class RunEntity(
-    val dateTime: LocalDateTime = LocalDateTime.now(),
+    val startDateTime: LocalDateTime = LocalDateTime.now(),
+    var endDataTime: LocalDateTime? = null,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

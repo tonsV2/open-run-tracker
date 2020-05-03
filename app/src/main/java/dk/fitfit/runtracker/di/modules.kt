@@ -22,5 +22,5 @@ val repositoryModule = module {
 
 @JvmField
 val viewModelModule = module {
-    viewModel { LocationUpdateViewModel(get(), get()) }
+    viewModel { LocationUpdateViewModel(get()) }
 }

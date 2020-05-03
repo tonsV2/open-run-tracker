@@ -8,7 +8,10 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="duration">Duration</string>
+    <string name="distance">Distance</string>
+    <string name="pace">Pace</string>
+
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="fine_location_access_rationale_title_text">Welcome to the Background Location Sample!</string>

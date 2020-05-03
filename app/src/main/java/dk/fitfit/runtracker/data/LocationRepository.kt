@@ -3,13 +3,16 @@ package dk.fitfit.runtracker.data
 import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import dk.fitfit.runtracker.data.db.LocationDao
 import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.data.db.RunDao
+import dk.fitfit.runtracker.data.db.RunEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 private const val TAG = "LocationRepository"
 
@@ -20,6 +23,10 @@ private const val TAG = "LocationRepository"
 class LocationRepository(private val runDao: RunDao, private val locationDao: LocationDao, private val locationManager: LocationManager) {
     private var runId: Long = 0
 
+    fun getCurrentRun(): LiveData<RunEntity> {
+        return runDao.getLiveRun(runId)
+    }
+
     /**
      * Returns all recorded locations from database.
      */
@@ -28,7 +35,7 @@ class LocationRepository(private val runDao: RunDao, private val locationDao: Lo
     /**
      * Returns all recorded locations from current run.
      */
-    fun getLocations(): LiveData<List<LocationEntity>> = locationDao.getLocations(runId)
+    fun getLocations(): LiveData<List<LocationEntity>> = getLocations(runId)
 
     /**
      * Adds list of locations to the database.
@@ -44,21 +51,21 @@ class LocationRepository(private val runDao: RunDao, private val locationDao: Lo
      */
     val receivingLocationUpdates: LiveData<Boolean> = locationManager.receivingLocationUpdates
 
-    /**
-     * Subscribes to location updates.
-     */
-    @MainThread
-    fun startLocationUpdates() {
-        CoroutineScope(IO).launch {
+    fun startLocationUpdates(): Long {
+//        CoroutineScope(IO).launch {
             runId = runDao.newRun()
             Log.d(TAG, "New run id: $runId")
             locationManager.startLocationUpdates(runId)
-        }
+            return runId
+//        }
     }
 
-    /**
-     * Un-subscribes from location updates.
-     */
-    @MainThread
-    fun stopLocationUpdates() = locationManager.stopLocationUpdates()
+    fun stopLocationUpdates(runId: Long) {
+        CoroutineScope(IO).launch {
+            val run = runDao.getRun(runId)
+            run.endDataTime = LocalDateTime.now()
+            runDao.updateRun(run)
+            locationManager.stopLocationUpdates()
+        }
+    }
 }
