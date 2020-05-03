@@ -21,10 +21,8 @@ private const val TAG = "LocationRepository"
  * checking location update status).
  */
 class LocationRepository(private val runDao: RunDao, private val locationDao: LocationDao, private val locationManager: LocationManager) {
-    private var runId: Long = 0
-
-    fun getCurrentRun(): LiveData<RunEntity> {
-        return runDao.getLiveRun(runId)
+    fun getRun(id: Long): LiveData<RunEntity> {
+        return runDao.getLiveRun(id)
     }
 
     /**
@@ -53,7 +51,7 @@ class LocationRepository(private val runDao: RunDao, private val locationDao: Lo
 
     fun startLocationUpdates(): Long {
 //        CoroutineScope(IO).launch {
-            runId = runDao.newRun()
+            val runId = runDao.newRun()
             Log.d(TAG, "New run id: $runId")
             locationManager.startLocationUpdates(runId)
             return runId
