@@ -2,6 +2,7 @@ package dk.fitfit.runtracker.data.db
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.time.LocalDateTime
 
@@ -13,7 +14,8 @@ import java.time.LocalDateTime
             childColumns = ["runId"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index("runId")]
 )
 data class LocationEntity(
     val runId: Long,
