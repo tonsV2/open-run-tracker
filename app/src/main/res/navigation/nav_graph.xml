@@ -7,14 +7,18 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="dk.fitfit.runtracker.TrackFragment"
+        android:name="dk.fitfit.runtracker.ui.LocationUpdateFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_PermissionRequestFragment"
+            app:destination="@id/permissionRequestFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="dk.fitfit.runtracker.SecondFragment"
@@ -24,5 +28,12 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/permissionRequestFragment"
+        android:name="dk.fitfit.runtracker.ui.PermissionRequestFragment"
+        android:label="@string/permission_request_fragment"
+        tools:layout="@layout/fragment_permission_request">
     </fragment>
 </navigation>
