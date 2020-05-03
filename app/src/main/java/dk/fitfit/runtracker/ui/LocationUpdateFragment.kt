@@ -58,6 +58,10 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
         button_stop.setOnClickListener {
             locationUpdateViewModel.stopLocationUpdates()
         }
+
+        button_run_list.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_RunListFragment)
+        }
     }
 
     fun mduration(dateTime: LocalDateTime): String {

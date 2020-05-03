@@ -39,6 +39,6 @@
 
     <string name="settings">Settings</string>
 
-    <string name="enhance_with_background_location_button_text">Enhance with Background Location</string>
+    <string name="run_list_fragment_label">Runs</string>
 
 </resources>

@@ -2,8 +2,10 @@ package dk.fitfit.runtracker.di
 
 import dk.fitfit.runtracker.data.LocationManager
 import dk.fitfit.runtracker.data.LocationRepository
+import dk.fitfit.runtracker.data.RunRepository
 import dk.fitfit.runtracker.data.db.RunDatabase
 import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
+import dk.fitfit.runtracker.viewmodels.RunListViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -18,9 +20,11 @@ val databaseModule = module {
 val repositoryModule = module {
     single { LocationRepository(get(), get(), get()) }
     single { LocationManager(get()) }
+    single { RunRepository(get()) }
 }
 
 @JvmField
 val viewModelModule = module {
     viewModel { LocationUpdateViewModel(get()) }
+    viewModel { RunListViewModel(get()) }
 }

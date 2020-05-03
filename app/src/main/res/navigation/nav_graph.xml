@@ -17,6 +17,16 @@
         <action
             android:id="@+id/action_FirstFragment_to_PermissionRequestFragment"
             app:destination="@id/permissionRequestFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_RunListFragment"
+            app:destination="@id/RunListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/RunListFragment"
+        android:name="dk.fitfit.runtracker.ui.RunListFragment"
+        android:label="@string/run_list_fragment_label"
+        tools:layout="@layout/fragment_run_list">
     </fragment>
 
     <fragment
