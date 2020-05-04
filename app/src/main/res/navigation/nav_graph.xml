@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
-        <action
             android:id="@+id/action_FirstFragment_to_PermissionRequestFragment"
             app:destination="@id/permissionRequestFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_RunListFragment"
             app:destination="@id/RunListFragment" />
+        <action
+            android:id="@+id/action_RunListFragment_to_MapFragment"
+            app:destination="@id/MapFragment" />
     </fragment>
 
     <fragment

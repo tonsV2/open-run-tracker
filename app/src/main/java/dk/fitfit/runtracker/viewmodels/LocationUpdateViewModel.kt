@@ -14,6 +14,9 @@ import java.time.LocalDateTime
 class LocationUpdateViewModel(private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
     private val _runId: MutableLiveData<Long> = MutableLiveData()
 
+    val runId: Long?
+        get() = _runId.value
+
     private fun updateRunId(runId: Long) {
         _runId.postValue(runId)
     }

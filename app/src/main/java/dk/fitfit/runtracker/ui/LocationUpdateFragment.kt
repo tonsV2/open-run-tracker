@@ -5,6 +5,9 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -27,6 +30,13 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fab.setOnClickListener {
+            val runId = locationUpdateViewModel.runId
+            val bundle = bundleOf(MapFragment.EXTRA_ID to runId)
+            findNavController().navigate(R.id.action_RunListFragment_to_MapFragment, bundle)
+
+        }
+
         locationUpdateViewModel.duration.observe(viewLifecycleOwner) {
             duration.text = it
         }
@@ -41,10 +51,12 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
 
         locationUpdateViewModel.receivingLocationUpdates.observe(viewLifecycleOwner) {
             button_start.isEnabled = !it
-        }
-
-        locationUpdateViewModel.receivingLocationUpdates.observe(viewLifecycleOwner) {
             button_stop.isEnabled = it
+            button_run_list.isEnabled = !it
+            fab.visibility = when(it) {
+                false -> GONE
+                true -> VISIBLE
+            }
         }
 
         button_start.setOnClickListener {
