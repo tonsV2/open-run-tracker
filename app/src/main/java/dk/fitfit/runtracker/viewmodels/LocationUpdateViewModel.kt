@@ -21,6 +21,19 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     val receivingLocationUpdates: LiveData<Boolean> = locationRepository.receivingLocationUpdates
 
+    val speed: LiveData<String> = liveData {
+        while (true) {
+            if (receivingLocationUpdates.value == true) {
+                val locationEntity = locations.value?.first()
+                if (locationEntity != null) {
+                    val speed = locationEntity.speed
+                    emit("${(speed * 3600) / 1000}")
+                }
+            }
+            delay(1_000)
+        }
+    }
+
     private val locations: LiveData<List<LocationEntity>> = Transformations.switchMap(_runId) {
         locationRepository.getLocations(it)
     }

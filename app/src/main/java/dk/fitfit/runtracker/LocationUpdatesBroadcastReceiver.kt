@@ -3,6 +3,7 @@ package dk.fitfit.runtracker
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import com.google.android.gms.location.LocationResult
 import dk.fitfit.runtracker.data.LocationRepository
@@ -32,15 +33,33 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     private val locationRepository: LocationRepository by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(TAG, "onReceive() context:$context, intent:$intent")
-
         if (intent.action == ACTION_PROCESS_UPDATES) {
             val runId = getRunIdWorkAround(intent)
             LocationResult.extractResult(intent)?.let { locationResult ->
                 val locations = locationResult.locations.map { location ->
-                    val epochMilli = Instant.ofEpochMilli(location.time)
-                    val localDateTime = LocalDateTime.ofInstant(epochMilli, ZoneOffset.UTC)
-                    LocationEntity(runId, location.latitude, location.longitude, localDateTime)
+                    val hasSpeed = location.hasSpeed()
+                    val speed = location.speed
+                    Log.d(TAG, "HasSpeed: $hasSpeed")
+                    Log.d(TAG, "Speed (km/h): ${(speed * 3600) / 1000}")
+                    Log.d(TAG, "Pace (m/km): ${3600 / (speed * 1000)}")
+
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+                    val altitude = location.altitude
+                    val accuracy = location.accuracy
+
+                    Log.d(TAG, "Location: $latitude, $longitude")
+                    Log.d(TAG, "Accuracy: $accuracy")
+
+                    val verticalAccuracy: Float? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val verticalAccuracy = location.verticalAccuracyMeters
+                        Log.d(TAG, "VerticalAccuracy: $verticalAccuracy")
+                        verticalAccuracy
+                    } else {
+                        null
+                    }
+
+                    LocationEntity(runId, latitude, longitude, altitude, speed, accuracy, verticalAccuracy, location.time.toLocalDateTime())
                 }
                 if (locations.isNotEmpty()) {
                     locationRepository.addLocations(locations)
@@ -59,8 +78,11 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     companion object {
-        const val ACTION_PROCESS_UPDATES =
-            "com.google.android.gms.location.sample.locationupdatesbackgroundkotlin.action." +
-                    "PROCESS_UPDATES"
+        const val ACTION_PROCESS_UPDATES = "dk.fitfit.runtracker.action.PROCESS_UPDATES"
     }
+}
+
+private fun Long.toLocalDateTime(): LocalDateTime {
+    val milliseconds = Instant.ofEpochMilli(this)
+    return LocalDateTime.ofInstant(milliseconds, ZoneOffset.UTC)
 }
