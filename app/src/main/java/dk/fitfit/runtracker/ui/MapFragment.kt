@@ -7,9 +7,9 @@ import androidx.lifecycle.observe
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN
+import com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.viewmodels.RunListViewModel
 import kotlinx.android.synthetic.main.fragment_map.*
@@ -56,6 +56,20 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     private fun drawRoute(map: GoogleMap, latLngs: List<LatLng>) {
+        map.addMarker(
+            MarkerOptions()
+                .position(latLngs.first())
+                .title("Start")
+                .icon(BitmapDescriptorFactory.defaultMarker(HUE_GREEN))
+        )
+
+        map.addMarker(
+            MarkerOptions()
+                .position(latLngs.last())
+                .title("End")
+                .icon(BitmapDescriptorFactory.defaultMarker(HUE_RED))
+        )
+
         map.addPolyline(
             PolylineOptions()
                 .clickable(true)
