@@ -1,6 +1,7 @@
 package dk.fitfit.runtracker.ui
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -78,8 +79,10 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     private fun updateCamera(map: GoogleMap, bounds: LatLngBounds) {
-        val padding = 0 // offset from edges of the map in pixels
-        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+        val dip = 32f
+        val padding =
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, resources.displayMetrics)
+        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding.toInt())
         map.animateCamera(cameraUpdate)
     }
 
