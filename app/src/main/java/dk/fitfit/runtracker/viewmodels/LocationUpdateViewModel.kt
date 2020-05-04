@@ -69,9 +69,11 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
     }
 
     fun stopLocationUpdates() {
-        val runId = _runId.value
-        if (runId != null) {
-            locationRepository.stopLocationUpdates(runId)
+        viewModelScope.launch(IO) {
+            val runId = _runId.value
+            if (runId != null) {
+                locationRepository.stopLocationUpdates(runId)
+            }
         }
     }
 
