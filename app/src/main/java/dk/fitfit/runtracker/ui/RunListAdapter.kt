@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.data.db.RunEntity
 import kotlinx.android.synthetic.main.run_item.view.*
+import java.time.Duration
 
 class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : ListAdapter<RunEntity, RunListAdapter.RunHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RunHolder {
@@ -21,19 +22,22 @@ class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : Lis
     override fun onBindViewHolder(holder: RunHolder, position: Int) {
         val run = getItem(position)
 
-        val distance = if (run.distance != null) {
-            "%.2f km".format(run.distance?.div(1_000))
+        val description = if (run.distance != null && run.endDataTime != null) {
+            val distance = "%.2f km".format(run.distance?.div(1_000))
+            val duration = Duration.between(run.startDateTime, run.endDataTime)
+            val durationString = "%02d:%02d:%02d".format(duration.toHours(), duration.toMinutes(), duration.toMillis() / 1_000)
+            "$distance run done in $durationString"
         } else {
-            "Distance not available"
+            ""
         }
 
         holder.runName.text = run.startDateTime.toString()
-        holder.runDistance.text = distance
+        holder.runDescription.text = description
     }
 
     inner class RunHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val runName: TextView = itemView.runName
-        val runDistance: TextView = itemView.runDistance
+        val runDescription: TextView = itemView.runDescription
 
         init {
             itemView.setOnClickListener {

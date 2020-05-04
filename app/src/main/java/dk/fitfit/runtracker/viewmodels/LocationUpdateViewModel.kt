@@ -8,8 +8,8 @@ import dk.fitfit.runtracker.utils.RouteUtils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.Duration
 import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
 
 class LocationUpdateViewModel(private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
     private val _runId: MutableLiveData<Long> = MutableLiveData()
@@ -51,7 +51,8 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         liveData {
             while (true) {
                 if (receivingLocationUpdates.value == true) {
-                    emit(duration(it.startDateTime))
+                    val dur = Duration.between(it.startDateTime, LocalDateTime.now())
+                    emit("%02d:%02d:%02d".format(dur.toHours(), dur.toMinutes(), dur.toMillis() / 1_000))
                 }
                 delay(1_000)
             }
@@ -72,21 +73,5 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                 locationRepository.stopLocationUpdates(runId)
             }
         }
-    }
-
-    private fun duration(dateTime: LocalDateTime): String {
-        val now = LocalDateTime.now()
-        var tempDateTime: LocalDateTime = dateTime
-
-        val hours = tempDateTime.until(now, ChronoUnit.HOURS)
-        tempDateTime = tempDateTime.plusHours(hours)
-
-        val minutes = tempDateTime.until(now, ChronoUnit.MINUTES)
-        tempDateTime = tempDateTime.plusMinutes(minutes)
-
-        val seconds = tempDateTime.until(now, ChronoUnit.SECONDS)
-
-//        return "$hours:$minutes:$seconds"
-        return "%02d:%02d:%02d".format(hours, minutes, seconds)
     }
 }
