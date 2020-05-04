@@ -2,29 +2,18 @@
     <string name="app_name">RunTracker</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="location_update_fragment_label">Location Update Fragment</string>
     <string name="permission_request_fragment">Permission Request Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <string name="duration">00:00:00</string>
     <string name="distance">0.00 km</string>
     <string name="speed">0.0 km/h</string>
-
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="fine_location_access_rationale_title_text">Welcome to the Background Location Sample!</string>
     <string name="fine_location_access_rationale_details_text">This sample allows you to receive location updates while using the app.
         \n\n
         In order for this feature to work, please approve access to your location via the button below.
     </string>
-
-    <string name="fine_location_permission_rationale">The fine location permission is needed for core functionality.</string>
-    <string name="fine_permission_denied_explanation">Fine location permission was denied, but is needed for core functionality.</string>
-
-    <string name="background_location_permission_rationale">The background location permission is needed for enhanced functionality.</string>
-    <string name="background_permission_denied_explanation">Background location permission was denied but needed for enhanced functionality.</string>
 
     <string name="enable_fine_location_button_text">Approve Location Access</string>
     <string name="enable_background_location_button_text">Approve Background Location Access</string>

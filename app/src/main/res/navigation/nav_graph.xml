@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/LocationUpdateFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/LocationUpdateFragment"
         android:name="dk.fitfit.runtracker.ui.LocationUpdateFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:label="@string/location_update_fragment_label"
+        tools:layout="@layout/fragment_location_update">
 
         <action
-            android:id="@+id/action_FirstFragment_to_PermissionRequestFragment"
-            app:destination="@id/permissionRequestFragment" />
+            android:id="@+id/action_LocationUpdateFragment_to_PermissionRequestFragment"
+            app:destination="@id/PermissionRequestFragment" />
         <action
-            android:id="@+id/action_FirstFragment_to_RunListFragment"
+            android:id="@+id/action_LocationUpdateFragment_to_RunListFragment"
             app:destination="@id/RunListFragment" />
         <action
             android:id="@+id/action_RunListFragment_to_MapFragment"
@@ -41,18 +41,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="dk.fitfit.runtracker.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/permissionRequestFragment"
+        android:id="@+id/PermissionRequestFragment"
         android:name="dk.fitfit.runtracker.ui.PermissionRequestFragment"
         android:label="@string/permission_request_fragment"
         tools:layout="@layout/fragment_permission_request">

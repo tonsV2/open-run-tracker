@@ -14,16 +14,16 @@ import androidx.navigation.fragment.findNavController
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.utils.hasPermission
 import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
-import kotlinx.android.synthetic.main.fragment_first.*
+import kotlinx.android.synthetic.main.fragment_location_update.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
+class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
     private val locationUpdateViewModel: LocationUpdateViewModel by viewModel()
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (!context.hasPermission(ACCESS_FINE_LOCATION) || !context.hasPermission(ACCESS_BACKGROUND_LOCATION)) {
-            findNavController().navigate(R.id.action_FirstFragment_to_PermissionRequestFragment)
+            findNavController().navigate(R.id.action_LocationUpdateFragment_to_PermissionRequestFragment)
         }
     }
 
@@ -53,7 +53,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
             button_start.isEnabled = !it
             button_stop.isEnabled = it
             button_run_list.isEnabled = !it
-            fab.visibility = when(it) {
+            fab.visibility = when (it) {
                 false -> GONE
                 true -> VISIBLE
             }
@@ -68,7 +68,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
         }
 
         button_run_list.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_RunListFragment)
+            findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunListFragment)
         }
     }
 }
