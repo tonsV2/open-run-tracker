@@ -32,21 +32,13 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_first) {
         }
 
         locationUpdateViewModel.distance.observe(viewLifecycleOwner) {
-            distance.text = it.toString()
+            distance.text = it
         }
 
         locationUpdateViewModel.speed.observe(viewLifecycleOwner) {
             speed.text = it
         }
 
-/*
-        locationUpdateViewModel.locations.observe(viewLifecycleOwner) {
-            Log.d(TAG, "Size: ${it.size}")
-            it.forEach {
-                Log.d(TAG, "${it.runId}:${it.longitude} - ${it.latitude}")
-            }
-        }
-*/
         locationUpdateViewModel.receivingLocationUpdates.observe(viewLifecycleOwner) {
             button_start.isEnabled = !it
         }
