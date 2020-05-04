@@ -20,13 +20,20 @@ class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : Lis
 
     override fun onBindViewHolder(holder: RunHolder, position: Int) {
         val run = getItem(position)
+
+        val distance = if (run.distance != null) {
+            "%.2f km".format(run.distance?.div(1_000))
+        } else {
+            "Distance not available"
+        }
+
         holder.runName.text = run.startDateTime.toString()
-        holder.runDescription.text = run.endDataTime.toString()
+        holder.runDistance.text = distance
     }
 
     inner class RunHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val runName: TextView = itemView.runName
-        val runDescription: TextView = itemView.runDescription
+        val runDistance: TextView = itemView.runDistance
 
         init {
             itemView.setOnClickListener {

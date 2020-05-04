@@ -8,5 +8,6 @@ import java.time.LocalDateTime
 data class RunEntity(
     val startDateTime: LocalDateTime = LocalDateTime.now(),
     var endDataTime: LocalDateTime? = null,
+    var distance: Double? = null,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 )

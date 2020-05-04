@@ -1,18 +1,17 @@
 package dk.fitfit.runtracker.viewmodels
 
-import android.location.Location
 import androidx.lifecycle.*
 import dk.fitfit.runtracker.data.LocationRepository
 import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.data.db.RunEntity
+import dk.fitfit.runtracker.utils.RouteUtils
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import java.util.stream.IntStream
 
-class LocationUpdateViewModel(private val locationRepository: LocationRepository) : ViewModel() {
+class LocationUpdateViewModel(private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
     private val _runId: MutableLiveData<Long> = MutableLiveData()
 
     private fun updateRunId(runId: Long) {
@@ -73,25 +72,6 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                 locationRepository.stopLocationUpdates(runId)
             }
         }
-    }
-
-    // TODO: Move this into RouteUtils?
-    private fun calculateDistance(it: List<LocationEntity>): Double {
-        val results = floatArrayOf(0f)
-        val sum = IntStream
-            .range(0, it.size - 1)
-            .mapToDouble { i ->
-                Location.distanceBetween(
-                    it[i].latitude,
-                    it[i].longitude,
-                    it[i + 1].latitude,
-                    it[i + 1].longitude,
-                    results
-                )
-                results[0].toDouble()
-            }
-            .sum()
-        return sum
     }
 
     private fun duration(dateTime: LocalDateTime): String {
