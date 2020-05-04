@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import dk.fitfit.runtracker.R
-import dk.fitfit.runtracker.hasPermission
+import dk.fitfit.runtracker.utils.hasPermission
 import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
 import kotlinx.android.synthetic.main.fragment_first.*
 import org.koin.android.viewmodel.ext.android.viewModel

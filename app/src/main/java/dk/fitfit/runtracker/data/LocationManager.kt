@@ -13,7 +13,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import dk.fitfit.runtracker.LocationUpdatesBroadcastReceiver
-import dk.fitfit.runtracker.hasPermission
+import dk.fitfit.runtracker.utils.hasPermission
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "LocationManager"
