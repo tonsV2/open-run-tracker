@@ -1,9 +1,10 @@
-package dk.fitfit.runtracker
+package dk.fitfit.runtracker.ui
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import dk.fitfit.runtracker.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
