@@ -23,11 +23,11 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     val speed: LiveData<String> = liveData {
         while (true) {
-            if (receivingLocationUpdates.value == true) {
+            if (receivingLocationUpdates.value == true && locations.value?.isEmpty() != true) {
                 val locationEntity = locations.value?.first()
                 if (locationEntity != null) {
                     val speed = locationEntity.speed
-                    emit("${(speed * 3600) / 1000}")
+                    emit("%.1f km/h".format((speed * 3600) / 1000))
                 }
             }
             delay(1_000)
@@ -42,9 +42,9 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         locationRepository.getRun(it)
     }
 
-    val distance: LiveData<Double> = Transformations.switchMap(locations) {
+    val distance: LiveData<String> = Transformations.switchMap(locations) {
         liveData {
-            emit(calculateDistance(it))
+            emit("%.2f km".format(routeUtils.calculateDistance(it) / 1_000))
         }
     }
 
