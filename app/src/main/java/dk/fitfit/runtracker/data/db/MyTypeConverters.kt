@@ -4,8 +4,6 @@ import androidx.room.TypeConverter
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.util.Date
-import java.util.UUID
 
 class MyTypeConverters {
     @TypeConverter

@@ -1,30 +1,26 @@
 package dk.fitfit.runtracker.ui
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
-import dk.fitfit.runtracker.BuildConfig
 import dk.fitfit.runtracker.R
 import kotlinx.android.synthetic.main.fragment_permission_request.*
 
 private const val TAG = "PermissionRequestFrag"
 
-/**
- * Displays information about why a user should enable either the fine location permission or the
- * background location permission (depending on what is needed).
- *
- * Allows users to grant the permissions as well.
- */
 class PermissionRequestFragment : Fragment(R.layout.fragment_permission_request) {
+    private val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+    } else {
+        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -34,10 +30,6 @@ class PermissionRequestFragment : Fragment(R.layout.fragment_permission_request)
         permissionRequestButton.text = getString(R.string.enable_fine_location_button_text)
 
         permissionRequestButton.setOnClickListener {
-            val permissions = arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            )
             requestPermissions(permissions, REQUEST_PERMISSIONS_REQUEST_CODE)
         }
     }
@@ -52,7 +44,6 @@ class PermissionRequestFragment : Fragment(R.layout.fragment_permission_request)
 
                 grantResults[0] == PackageManager.PERMISSION_GRANTED ->
                     findNavController().navigateUp()
-//                    Toast.makeText(context, "Permissions granted!", Toast.LENGTH_SHORT).show()
 
                 else ->
                     Toast.makeText(context, "Permissions not granted!", Toast.LENGTH_SHORT).show()
