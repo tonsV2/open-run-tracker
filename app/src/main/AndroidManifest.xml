@@ -27,13 +27,7 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".LocationUpdatesBroadcastReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.android.gms.location.sample.locationupdatesbackgroundkotlin.LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES" />
-            </intent-filter>
-        </receiver>
+        <receiver android:name=".LocationUpdatesBroadcastReceiver" />
 
     </application>
 
