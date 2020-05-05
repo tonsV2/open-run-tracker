@@ -44,6 +44,18 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         locationRepository.getRun(it)
     }
 
+    val lapCompleted: LiveData<Int> = Transformations.switchMap(locations) {
+        liveData {
+            val distanceMeters = routeUtils.calculateDistance(it)
+            val reminder = if (distanceMeters < LAP_IN_METERS) {
+                distanceMeters
+            } else {
+                distanceMeters % LAP_IN_METERS
+            }
+            emit(reminder.toInt())
+        }
+    }
+
     val distance: LiveData<String> = Transformations.switchMap(locations) {
         liveData {
             emit("%.2f km".format(routeUtils.calculateDistance(it) / 1_000))
@@ -76,5 +88,9 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                 locationRepository.stopLocationUpdates(runId)
             }
         }
+    }
+
+    companion object {
+        private const val LAP_IN_METERS = 1_000
     }
 }

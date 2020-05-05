@@ -3,6 +3,8 @@ package dk.fitfit.runtracker.ui
 import android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
@@ -11,14 +13,19 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.utils.hasPermission
 import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
 import kotlinx.android.synthetic.main.fragment_location_update.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
+
 class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
     private val locationUpdateViewModel: LocationUpdateViewModel by viewModel()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -39,12 +46,22 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         }
 
+
+        val chartColors = getChartColors()
+
+        initializeChart(chartColors)
+
+        locationUpdateViewModel.lapCompleted.observe(viewLifecycleOwner) {
+            updateChart(it, chartColors)
+        }
+
         locationUpdateViewModel.duration.observe(viewLifecycleOwner) {
             duration.text = it
         }
 
         locationUpdateViewModel.distance.observe(viewLifecycleOwner) {
             distance.text = it
+            pieChart.centerText = it
         }
 
         locationUpdateViewModel.speed.observe(viewLifecycleOwner) {
@@ -80,6 +97,47 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         button_run_list_enabled.setOnClickListener {
             findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunListFragment)
+        }
+    }
+
+    private fun initializeChart(chartColors: List<Int>) {
+        pieChart.isDrawHoleEnabled = true
+        pieChart.setHoleColor(Color.TRANSPARENT)
+
+        pieChart.setDrawEntryLabels(false)
+        pieChart.legend.isEnabled = false
+        pieChart.description = null
+
+        updateChart(0, chartColors)
+    }
+
+    private fun updateChart(it: Int, chartColors: List<Int>) {
+        val entries = listOf(
+            PieEntry(it.toFloat()),
+            PieEntry((1_000 - it).toFloat())
+        )
+
+        val pieDataSet = PieDataSet(entries, "")
+        pieDataSet.colors = chartColors
+
+        val data = PieData(pieDataSet)
+        data.setDrawValues(false)
+        pieChart.data = data
+
+        pieChart.invalidate()
+    }
+
+    private fun getChartColors(): List<Int> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            listOf(
+                resources.getColor(R.color.button_background_disabled, null),
+                resources.getColor(R.color.primary_text, null)
+            )
+        } else {
+            listOf(
+                resources.getColor(R.color.button_background_disabled),
+                resources.getColor(R.color.primary_text)
+            )
         }
     }
 }
