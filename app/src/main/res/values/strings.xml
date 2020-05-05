@@ -17,7 +17,7 @@
 
     <string name="enable_fine_location_button_text">Approve Location Access</string>
 
-    <string name="run_list_fragment_label">Runs</string>
+    <string name="run_list_fragment_label">History</string>
     <string name="map_fragment_label">Map</string>
 
 </resources>
