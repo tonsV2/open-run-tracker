@@ -61,7 +61,6 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         locationUpdateViewModel.distance.observe(viewLifecycleOwner) {
             distance.text = it
-            pieChart.centerText = it
         }
 
         locationUpdateViewModel.speed.observe(viewLifecycleOwner) {
