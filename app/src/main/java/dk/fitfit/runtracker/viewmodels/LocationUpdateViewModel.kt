@@ -21,7 +21,6 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         _runId.postValue(runId)
     }
 
-
     fun startLocationUpdates() {
         viewModelScope.launch(IO) {
             val runId = locationRepository.startLocationUpdates()
