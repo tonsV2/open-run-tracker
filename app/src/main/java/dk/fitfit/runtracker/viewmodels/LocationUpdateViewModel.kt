@@ -21,6 +21,23 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         _runId.postValue(runId)
     }
 
+
+    fun startLocationUpdates() {
+        viewModelScope.launch(IO) {
+            val runId = locationRepository.startLocationUpdates()
+            updateRunId(runId)
+        }
+    }
+
+    fun stopLocationUpdates() {
+        viewModelScope.launch(IO) {
+            val runId = _runId.value
+            if (runId != null) {
+                locationRepository.stopLocationUpdates(runId)
+            }
+        }
+    }
+
     val receivingLocationUpdates: LiveData<Boolean> = locationRepository.receivingLocationUpdates
 
     val speed: LiveData<String> = liveData {
@@ -38,10 +55,6 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     private val locations: LiveData<List<LocationEntity>> = Transformations.switchMap(_runId) {
         locationRepository.getLocations(it)
-    }
-
-    private val currentRun: LiveData<RunEntity> = Transformations.switchMap(_runId) {
-        locationRepository.getRun(it)
     }
 
     private val distanceMeters: LiveData<Double> = Transformations.switchMap(locations) {
@@ -67,6 +80,10 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         }
     }
 
+    private val currentRun: LiveData<RunEntity> = Transformations.switchMap(_runId) {
+        locationRepository.getRun(it)
+    }
+
     val duration: LiveData<String> = Transformations.switchMap(currentRun) {
         liveData {
             while (true) {
@@ -75,22 +92,6 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                     emit("%02d:%02d:%02d".format(dur.toHours(), dur.toMinutes(), dur.toMillis() / 1_000))
                 }
                 delay(1_000)
-            }
-        }
-    }
-
-    fun startLocationUpdates() {
-        viewModelScope.launch(IO) {
-            val runId = locationRepository.startLocationUpdates()
-            updateRunId(runId)
-        }
-    }
-
-    fun stopLocationUpdates() {
-        viewModelScope.launch(IO) {
-            val runId = _runId.value
-            if (runId != null) {
-                locationRepository.stopLocationUpdates(runId)
             }
         }
     }
