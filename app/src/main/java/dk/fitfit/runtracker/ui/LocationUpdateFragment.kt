@@ -30,6 +30,8 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.title = getString(R.string.app_name)
+
         fab.setOnClickListener {
             val runId = locationUpdateViewModel.runId
             val bundle = bundleOf(MapFragment.EXTRA_ID to runId)

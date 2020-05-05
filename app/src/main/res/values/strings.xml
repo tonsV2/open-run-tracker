@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RunTracker</string>
+    <string name="app_name">Run Tracker</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="location_update_fragment_label">Location Update Fragment</string>
