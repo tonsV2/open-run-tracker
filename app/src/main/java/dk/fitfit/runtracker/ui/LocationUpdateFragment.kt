@@ -51,7 +51,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         initializeChart(chartColors)
 
-        locationUpdateViewModel.lapCompleted.observe(viewLifecycleOwner) {
+        locationUpdateViewModel.lapProgress.observe(viewLifecycleOwner) {
             updateChart(it, chartColors)
         }
 

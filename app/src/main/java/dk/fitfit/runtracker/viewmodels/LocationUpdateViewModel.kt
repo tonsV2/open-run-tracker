@@ -63,7 +63,7 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         }
     }
 
-    val lapCompleted: LiveData<Int> = Transformations.switchMap(distanceMeters) {
+    val lapProgress: LiveData<Int> = Transformations.switchMap(distanceMeters) {
         liveData {
             val lapMeters = if (it < LAP_IN_METERS) {
                 it
