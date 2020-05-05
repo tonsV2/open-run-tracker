@@ -1,5 +1,7 @@
 package dk.fitfit.runtracker.di
 
+import android.content.Context
+import androidx.room.Room
 import dk.fitfit.runtracker.data.LocationManager
 import dk.fitfit.runtracker.data.LocationRepository
 import dk.fitfit.runtracker.data.RunRepository
@@ -12,7 +14,7 @@ import org.koin.dsl.module
 
 @JvmField
 val databaseModule = module {
-    single { RunDatabase.getDatabase(get()) }
+    single { provideDatabase(get()) }
     single { get<RunDatabase>().runDao() }
     single { get<RunDatabase>().locationDao() }
 }
@@ -34,3 +36,8 @@ val viewModelModule = module {
 val utils = module {
     single { RouteUtils() }
 }
+
+fun provideDatabase(context: Context) = Room
+    .databaseBuilder(context, RunDatabase::class.java, "database")
+    .fallbackToDestructiveMigration()
+    .build()
