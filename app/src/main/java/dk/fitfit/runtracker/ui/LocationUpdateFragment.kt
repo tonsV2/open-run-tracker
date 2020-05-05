@@ -54,7 +54,16 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
         locationUpdateViewModel.receivingLocationUpdates.observe(viewLifecycleOwner) {
             button_start.isEnabled = !it
             button_stop.isEnabled = it
-            button_run_list.isEnabled = !it
+
+            button_run_list_enabled.visibility = when (it) {
+                false -> VISIBLE
+                true -> GONE
+            }
+            button_run_list_disabled.visibility = when (it) {
+                false -> GONE
+                true -> VISIBLE
+            }
+
             fab.visibility = when (it) {
                 false -> GONE
                 true -> VISIBLE
@@ -69,7 +78,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
             locationUpdateViewModel.stopLocationUpdates()
         }
 
-        button_run_list.setOnClickListener {
+        button_run_list_enabled.setOnClickListener {
             findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunListFragment)
         }
     }

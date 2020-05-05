@@ -12,6 +12,9 @@
         android:layout_height="wrap_content"
         android:text="@string/duration"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
+        android:paddingTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +25,8 @@
         android:layout_height="wrap_content"
         android:text="@string/distance"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/duration" />
@@ -32,6 +37,8 @@
         android:layout_height="wrap_content"
         android:text="@string/speed"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/distance" />
@@ -58,11 +65,26 @@
         app:layout_constraintStart_toEndOf="@id/button_start"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_run_list"
+    <ImageButton
+        android:id="@+id/button_run_list_enabled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Run List"
+        app:srcCompat="@drawable/ic_run_history"
+        app:backgroundTint="@color/primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_stop"
+        app:layout_constraintVertical_bias="0.945" />
+
+    <ImageButton
+        android:id="@+id/button_run_list_disabled"
+        android:enabled="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_run_history_disabled"
+        app:backgroundTint="@color/button_background_disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.054"
@@ -75,8 +97,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/primary"
+        app:tint="@android:color/white"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_map" />
+        app:srcCompat="@drawable/ic_fab_map" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
