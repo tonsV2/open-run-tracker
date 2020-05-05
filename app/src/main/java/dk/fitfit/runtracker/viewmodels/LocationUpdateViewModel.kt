@@ -89,7 +89,8 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
             while (true) {
                 if (receivingLocationUpdates.value == true) {
                     val dur = Duration.between(it.startDateTime, LocalDateTime.now())
-                    emit("%02d:%02d:%02d".format(dur.toHours(), dur.toMinutes(), dur.toMillis() / 1_000))
+                    val seconds = dur.toMillis() / 1_000
+                    emit("%02d:%02d:%02d".format(seconds / 3600, (seconds % 3600) / 60, (seconds % 60)))
                 }
                 delay(1_000)
             }
