@@ -2,6 +2,8 @@
 Open source run tracker build for fun...
 
 # TODO
+* Delete from history
+* Export to GPX
 * Show notification when app isn't in focus
 * Settings
 ** Imperial/metrics
