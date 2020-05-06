@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -88,7 +89,12 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
         }
 
         button_stop.setOnClickListener {
+            Toast.makeText(context, "Long press to end run!", Toast.LENGTH_SHORT).show()
+        }
+
+        button_stop.setOnLongClickListener {
             locationUpdateViewModel.stopLocationUpdates()
+            true
         }
 
         button_run_list_enabled.setOnClickListener {
