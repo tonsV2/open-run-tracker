@@ -49,7 +49,7 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 //            val runId = intent.getLongExtra("runId", 0)
         val runId = intent.data?.getQueryParameter("runId")?.toLong() ?: 0L
         if (runId == 0L) {
-            Log.e(TAG, "run id was 0")
+            throw RuntimeException("Run id can't be 0")
         }
         return runId
     }
