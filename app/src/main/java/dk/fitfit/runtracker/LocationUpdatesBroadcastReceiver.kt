@@ -63,7 +63,7 @@ private fun Location.toLocationEntity(runId: Long): LocationEntity {
     val speed = this.speed
 
     Log.d(TAG, "Speed (km/h): ${(speed * 3600) / 1000}")
-    Log.d(TAG, "Pace (m/km): ${3600 / (speed * 1000)}")
+    Log.d(TAG, "Pace (m/km): ${(1000 / 60) / speed}")
 
     val latitude = this.latitude
     val longitude = this.longitude
