@@ -8,10 +8,14 @@ import androidx.lifecycle.observe
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.*
-import com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN
-import com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_RED
+import com.google.android.gms.maps.model.BitmapDescriptorFactory.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
+import dk.fitfit.runtracker.BuildConfig
 import dk.fitfit.runtracker.R
+import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.viewmodels.RunListViewModel
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -43,11 +47,15 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     override fun onMapReady(map: GoogleMap) {
-        arguments?.let {
-            val runId = it.getLong(EXTRA_ID)
+        arguments?.let { bundle ->
+            val runId = bundle.getLong(EXTRA_ID)
 
-            runListViewModel.getLocations(runId).observe(viewLifecycleOwner) {
-                val latLngs = it.map { LatLng(it.latitude, it.longitude) }
+            runListViewModel.getLocations(runId).observe(viewLifecycleOwner) { locations ->
+                if (BuildConfig.DEBUG) {
+                    drawDebugRoute(map, locations)
+                }
+
+                val latLngs = locations.map { LatLng(it.latitude, it.longitude) }
                 drawRoute(map, latLngs)
 
                 val bounds = getBounds(latLngs)
@@ -56,19 +64,30 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         }
     }
 
+    private fun drawDebugRoute(map: GoogleMap, locations: List<LocationEntity>) {
+        locations.forEach {
+            map.addMarker(
+                MarkerOptions()
+                    .position(LatLng(it.latitude, it.longitude))
+                    .title("Id(${it.id}): $it")
+                    .icon(defaultMarker(HUE_ORANGE))
+            )
+        }
+    }
+
     private fun drawRoute(map: GoogleMap, latLngs: List<LatLng>) {
         map.addMarker(
             MarkerOptions()
                 .position(latLngs.first())
                 .title("Start")
-                .icon(BitmapDescriptorFactory.defaultMarker(HUE_GREEN))
+                .icon(defaultMarker(HUE_GREEN))
         )
 
         map.addMarker(
             MarkerOptions()
                 .position(latLngs.last())
                 .title("End")
-                .icon(BitmapDescriptorFactory.defaultMarker(HUE_RED))
+                .icon(defaultMarker(HUE_RED))
         )
 
         map.addPolyline(
