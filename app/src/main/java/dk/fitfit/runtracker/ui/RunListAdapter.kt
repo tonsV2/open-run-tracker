@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.data.db.RunEntity
+import dk.fitfit.runtracker.utils.toHHMMSS
 import kotlinx.android.synthetic.main.run_item.view.*
 import java.time.Duration
 
@@ -24,8 +25,8 @@ class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : Lis
 
         val description = if (run.distance != null && run.endDataTime != null) {
             val distance = "%.2f km".format(run.distance?.div(1_000))
-            val duration = Duration.between(run.startDateTime, run.endDataTime)
-            val durationString = "%02d:%02d:%02d".format(duration.toHours(), duration.toMinutes(), duration.toMillis() / 1_000)
+            val durationString = Duration.between(run.startDateTime, run.endDataTime).toHHMMSS()
+
             "$distance run done in $durationString"
         } else {
             ""

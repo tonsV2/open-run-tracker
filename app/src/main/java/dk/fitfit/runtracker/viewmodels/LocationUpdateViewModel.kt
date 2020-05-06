@@ -5,6 +5,7 @@ import dk.fitfit.runtracker.data.LocationRepository
 import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.data.db.RunEntity
 import dk.fitfit.runtracker.utils.RouteUtils
+import dk.fitfit.runtracker.utils.toHHMMSS
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -87,9 +88,8 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         liveData {
             while (true) {
                 if (receivingLocationUpdates.value == true) {
-                    val dur = Duration.between(it.startDateTime, LocalDateTime.now())
-                    val seconds = dur.toMillis() / 1_000
-                    emit("%02d:%02d:%02d".format(seconds / 3600, (seconds % 3600) / 60, (seconds % 60)))
+                    val durationString = Duration.between(it.startDateTime, LocalDateTime.now()).toHHMMSS()
+                    emit(durationString)
                 }
                 delay(1_000)
             }
