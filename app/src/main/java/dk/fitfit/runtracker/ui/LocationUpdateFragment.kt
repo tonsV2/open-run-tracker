@@ -22,7 +22,6 @@ import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
 import kotlinx.android.synthetic.main.fragment_location_update.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-
 class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
     private val locationUpdateViewModel: LocationUpdateViewModel by viewModel()
 
@@ -46,9 +45,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         }
 
-
         val chartColors = getChartColors()
-
         initializeChart(chartColors)
 
         locationUpdateViewModel.lapProgress.observe(viewLifecycleOwner) {
