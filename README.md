@@ -20,3 +20,6 @@ Open source run tracker build for fun...
 
 # Inspiration
 * https://github.com/android/location-samples/tree/master/LocationUpdatesBackgroundKotlin
+
+# Credits
+* Thanks to Freepik for making the application available to public domain - I couldn't find it on their own site - https://www.flaticon.com/free-icon/running_763812?term=run%20sport&page=1&position=9
