@@ -1,10 +1,8 @@
 package dk.fitfit.runtracker.data
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
@@ -18,79 +16,39 @@ import java.util.concurrent.TimeUnit
 
 private const val TAG = "LocationManager"
 
-/**
- * Manages all location related tasks for the app.
- */
 class LocationManager(private val context: Context) {
-
     private val _receivingLocationUpdates: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
-    /**
-     * Status of location updates, i.e., whether the app is actively subscribed to location changes.
-     */
     val receivingLocationUpdates: LiveData<Boolean>
         get() = _receivingLocationUpdates
 
-    // The Fused Location Provider provides access to location APIs.
     private val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
 
-    // Stores parameters for requests to the FusedLocationProviderApi.
     private val locationRequest: LocationRequest = LocationRequest().apply {
-        // Sets the desired interval for active location updates. This interval is inexact. You
-        // may not receive updates at all if no location sources are available, or you may
-        // receive them slower than requested. You may also receive updates faster than
-        // requested if other applications are requesting location at a faster interval.
-        //
-        // IMPORTANT NOTE: Apps running on "O" devices (regardless of targetSdkVersion) may
-        // receive updates less frequently than this interval when the app is no longer in the
-        // foreground.
         interval = TimeUnit.SECONDS.toMillis(10)
-
-        // Sets the fastest rate for active location updates. This interval is exact, and your
-        // application will never receive updates faster than this value.
         fastestInterval = TimeUnit.SECONDS.toMillis(3)
-
-        // Sets the maximum time when batched location updates are delivered. Updates may be
-        // delivered sooner than this interval.
         maxWaitTime = TimeUnit.SECONDS.toMillis(15)
-
         priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 
-    /**
-     * Creates default PendingIntent for location changes.
-     *
-     * Note: We use a BroadcastReceiver because on API level 26 and above (Oreo+), Android places
-     * limits on Services.
-     */
     private var locationUpdatePendingIntent: PendingIntent? = null
 
-    /**
-     * Uses the FusedLocationProvider to start location updates if the correct fine locations are
-     * approved.
-     *
-     * @throws SecurityException if ACCESS_FINE_LOCATION permission is removed before the
-     * FusedLocationClient's requestLocationUpdates() has been completed.
-     */
     @Throws(SecurityException::class)
     @MainThread
     fun startLocationUpdates(runId: Long) {
         Log.d(TAG, "startLocationUpdates()")
 
-        if (!context.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (!context.hasPermission(ACCESS_FINE_LOCATION)) {
+            // TODO: Redirect to grant permission fragment
             Log.e(TAG, "Manifest.permission.ACCESS_FINE_LOCATION not granted!!!")
             return
         }
 
-        // remove old intent
-        stopLocationUpdates()
-        initializeLocationUpdatePendingIntent(runId)
+        locationUpdatePendingIntent = LocationUpdatesBroadcastReceiver.createLocationUpdatePendingIntent(context, runId)
+
         try {
             _receivingLocationUpdates.postValue(true)
-            // If the PendingIntent is the same as the last request (which it always is), this
-            // request will replace any requestLocationUpdates() called before.
             fusedLocationClient.requestLocationUpdates(locationRequest, locationUpdatePendingIntent)
-            Log.d(TAG, "startLocationUpdates()")
         } catch (permissionRevoked: SecurityException) {
             _receivingLocationUpdates.postValue(false)
 
@@ -103,25 +61,12 @@ class LocationManager(private val context: Context) {
 
     @MainThread
     fun stopLocationUpdates() {
+        if (locationUpdatePendingIntent == null) {
+            throw RuntimeException("stopLocationUpdates() called before startLocationUpdates()")
+        }
+
         Log.d(TAG, "stopLocationUpdates()")
         _receivingLocationUpdates.postValue(false)
         fusedLocationClient.removeLocationUpdates(locationUpdatePendingIntent)
-    }
-
-    private fun initializeLocationUpdatePendingIntent(runId: Long) {
-        val intent = Intent(context, LocationUpdatesBroadcastReceiver::class.java)
-        intent.action = LocationUpdatesBroadcastReceiver.ACTION_PROCESS_UPDATES
-        putExtraWorkAround(intent, runId)
-
-        locationUpdatePendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-    }
-
-    private fun putExtraWorkAround(intent: Intent, runId: Long) {
-//        intent.putExtra("runId", runId)
-        val uri = Uri.Builder().scheme("http")
-            .authority("workaround.com")
-            .appendQueryParameter("runId", runId.toString())
-            .build()
-        intent.data = uri
     }
 }

@@ -1,9 +1,11 @@
 package dk.fitfit.runtracker
 
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import com.google.android.gms.location.LocationResult
@@ -17,19 +19,6 @@ import java.time.ZoneOffset
 
 private const val TAG = "LUBroadcastReceiver"
 
-/**
- * Receiver for handling location updates.
- *
- * For apps targeting API level O and above
- * {@link android.app.PendingIntent#getBroadcast(Context, int, Intent, int)} should be used when
- * requesting location updates in the background. Due to limits on background services,
- * {@link android.app.PendingIntent#getService(Context, int, Intent, int)} should NOT be used.
- *
- *  Note: Apps running on "O" devices (regardless of targetSdkVersion) may receive updates
- *  less frequently than the interval specified in the
- *  {@link com.google.android.gms.location.LocationRequest} when the app is no longer in the
- *  foreground.
- */
 class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     private val locationRepository: LocationRepository by inject()
 
@@ -47,7 +36,7 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
     private fun getRunIdWorkAround(intent: Intent): Long {
 //            val runId = intent.getLongExtra("runId", 0)
-        val runId = intent.data?.getQueryParameter("runId")?.toLong() ?: 0L
+        val runId = intent.data?.getQueryParameter(RUN_ID_PARAMETER)?.toLong() ?: 0L
         if (runId == 0L) {
             throw RuntimeException("Run id can't be 0")
         }
@@ -56,6 +45,24 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 
     companion object {
         const val ACTION_PROCESS_UPDATES = "dk.fitfit.runtracker.action.PROCESS_UPDATES"
+        private const val RUN_ID_PARAMETER = "run-id"
+
+        fun createLocationUpdatePendingIntent(context: Context, runId: Long): PendingIntent {
+            val intent = Intent(context, LocationUpdatesBroadcastReceiver::class.java)
+            intent.action = ACTION_PROCESS_UPDATES
+            putExtraWorkAround(intent, runId)
+
+            return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        private fun putExtraWorkAround(intent: Intent, runId: Long) {
+//        intent.putExtra("runId", runId)
+            val uri = Uri.Builder().scheme("http")
+                .authority("workaround.com")
+                .appendQueryParameter(RUN_ID_PARAMETER, runId.toString())
+                .build()
+            intent.data = uri
+        }
     }
 }
 
