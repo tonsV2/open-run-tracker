@@ -29,7 +29,18 @@
         tools:layout="@layout/fragment_run_list">
 
         <action
-            android:id="@+id/action_RunListFragment_to_MapFragment"
+            android:id="@+id/action_RunListFragment_to_RunSummaryFragment"
+            app:destination="@id/RunSummaryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/RunSummaryFragment"
+        android:name="dk.fitfit.runtracker.ui.RunSummaryFragment"
+        android:label="@string/run_summary_fragment_label"
+        tools:layout="@layout/fragment_run_summary">
+
+        <action
+            android:id="@+id/action_RunSummaryFragment_to_MapFragment"
             app:destination="@id/MapFragment" />
     </fragment>
 

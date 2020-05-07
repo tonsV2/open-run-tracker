@@ -25,7 +25,7 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
 
         val adapter = RunListAdapter {
             val bundle = bundleOf(EXTRA_ID to it.id)
-            findNavController().navigate(R.id.action_RunListFragment_to_MapFragment, bundle)
+            findNavController().navigate(R.id.action_RunListFragment_to_RunSummaryFragment, bundle)
         }
 
         runRecyclerView.adapter = adapter
