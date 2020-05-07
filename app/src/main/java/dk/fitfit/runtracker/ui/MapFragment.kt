@@ -69,7 +69,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             map.addMarker(
                 MarkerOptions()
                     .position(LatLng(it.latitude, it.longitude))
-                    .title("Id(${it.id}): $it")
+                    .title("Id(${it.id}), accuracy(${it.accuracy}), verticalAccuracy(${it.verticalAccuracy})")
                     .icon(defaultMarker(HUE_ORANGE))
             )
         }
