@@ -44,7 +44,7 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     }
 
     companion object {
-        const val ACTION_PROCESS_UPDATES = "dk.fitfit.runtracker.action.PROCESS_UPDATES"
+        private const val ACTION_PROCESS_UPDATES = "dk.fitfit.runtracker.action.PROCESS_UPDATES"
         private const val RUN_ID_PARAMETER = "run-id"
 
         fun createLocationUpdatePendingIntent(context: Context, runId: Long): PendingIntent {
@@ -67,28 +67,27 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
 }
 
 private fun Location.toLocationEntity(runId: Long): LocationEntity {
-    val speed = this.speed
-
-    Log.d(TAG, "Speed (km/h): ${(speed * 3600) / 1000}")
-    Log.d(TAG, "Pace (m/km): ${(1000 / 60) / speed}")
-
     val latitude = this.latitude
     val longitude = this.longitude
     val altitude = this.altitude
+    val speed = this.speed
     val accuracy = this.accuracy
-
-    Log.d(TAG, "Location: $latitude, $longitude")
-    Log.d(TAG, "Accuracy: $accuracy")
-
-    val verticalAccuracy: Float? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    val verticalAccuracy = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val verticalAccuracy = this.verticalAccuracyMeters
-        Log.d(TAG, "VerticalAccuracy: $verticalAccuracy")
         verticalAccuracy
     } else {
         null
     }
+    val time = this.time.toLocalDateTime()
 
-    return LocationEntity(runId, latitude, longitude, altitude, speed, accuracy, verticalAccuracy, this.time.toLocalDateTime())
+    Log.d(TAG, "Location: $latitude, $longitude")
+    Log.d(TAG, "Speed (km/h): ${(speed * 3600) / 1000}")
+    Log.d(TAG, "Pace (m/km): ${(1000 / 60) / speed}")
+    Log.d(TAG, "Accuracy: $accuracy")
+    Log.d(TAG, "VerticalAccuracy: $verticalAccuracy")
+    Log.d(TAG, "Time: $time")
+
+    return LocationEntity(runId, latitude, longitude, altitude, speed, accuracy, verticalAccuracy, time)
 }
 
 private fun Long.toLocalDateTime(): LocalDateTime {
