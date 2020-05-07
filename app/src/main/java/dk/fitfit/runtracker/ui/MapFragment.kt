@@ -49,6 +49,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         arguments?.let { bundle ->
             val runId = bundle.getLong(EXTRA_ID)
+            if (runId == 0L) throw IllegalArgumentException("Run id must not be null")
 
             runListViewModel.getLocations(runId).observe(viewLifecycleOwner) { locations ->
                 if (BuildConfig.DEBUG) {
