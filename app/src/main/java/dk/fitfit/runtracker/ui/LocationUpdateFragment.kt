@@ -43,7 +43,6 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
             val runId = locationUpdateViewModel.runId
             val bundle = bundleOf(MapFragment.EXTRA_ID to runId)
             findNavController().navigate(R.id.action_RunListFragment_to_MapFragment, bundle)
-
         }
 
         val chartColors = getChartColors()
