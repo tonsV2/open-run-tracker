@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.PolylineOptions
 import dk.fitfit.runtracker.BuildConfig
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.data.db.LocationEntity
+import dk.fitfit.runtracker.ui.exception.RunIdNotDefinedException
 import dk.fitfit.runtracker.viewmodels.RunListViewModel
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -49,7 +50,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         arguments?.let { bundle ->
             val runId = bundle.getLong(EXTRA_ID)
-            if (runId == 0L) throw IllegalArgumentException("Run id must not be null")
+            if (runId == 0L) throw RunIdNotDefinedException()
 
             runListViewModel.getLocations(runId).observe(viewLifecycleOwner) { locations ->
                 if (BuildConfig.DEBUG) {
@@ -100,8 +101,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
 
     private fun updateCamera(map: GoogleMap, bounds: LatLngBounds) {
         val dip = 32f
-        val padding =
-            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, resources.displayMetrics)
+        val padding = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, resources.displayMetrics)
         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding.toInt())
         map.animateCamera(cameraUpdate)
     }

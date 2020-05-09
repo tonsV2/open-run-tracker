@@ -1,22 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context=".ui.RunSummaryFragment">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/map"
+        <RelativeLayout
+            android:id="@+id/headerLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/timeOfDay"
+                android:text="Time of day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/started"
+                android:text="Started"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                android:layout_below="@id/timeOfDay" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:paddingBottom="0dp"
+        android:text="Summary"
+        app:layout_constraintStart_toStartOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/summaryContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintStart_toStartOf="@id/summary"
+        app:layout_constraintTop_toBottomOf="@id/summary">
+
+        <RelativeLayout
+            android:id="@+id/cardviewLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duration" />
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Distance"
+                android:layout_below="@id/duration" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/mapLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:paddingBottom="0dp"
         android:text="Map"
-        app:layout_constraintStart_toEndOf="@id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintStart_toStartOf="@id/summaryContainer"
+        app:layout_constraintTop_toBottomOf="@id/summaryContainer" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintStart_toStartOf="@id/mapLabel"
+        app:layout_constraintTop_toBottomOf="@id/mapLabel">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/summaryMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
+
+        <ImageButton
+            android:id="@+id/fullscreenButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_fullscreen"
+            app:backgroundTint="@color/primary"
+            android:layout_gravity="end"
+            android:layout_margin="6dp" />
+
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

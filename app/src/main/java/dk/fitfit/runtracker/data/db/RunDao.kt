@@ -6,15 +6,17 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+private const val SELECT_RUN_BY_ID_SQL = "SELECT * FROM RunEntity WHERE id = :id"
+
 @Dao
 interface RunDao {
     @Query("SELECT * FROM RunEntity ORDER BY startDateTime DESC")
     fun getRuns(): LiveData<List<RunEntity>>
 
-    @Query("SELECT * FROM RunEntity WHERE id = :id")
+    @Query(SELECT_RUN_BY_ID_SQL)
     fun getLiveRun(id: Long): LiveData<RunEntity>
 
-    @Query("SELECT * FROM RunEntity WHERE id = :id")
+    @Query(SELECT_RUN_BY_ID_SQL)
     fun getRun(id: Long): RunEntity
 
     @Update

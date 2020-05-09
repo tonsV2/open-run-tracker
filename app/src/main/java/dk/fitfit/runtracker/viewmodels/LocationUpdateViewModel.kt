@@ -24,6 +24,7 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     fun startLocationUpdates() {
         viewModelScope.launch(IO) {
+            // If shared preferences has run id use that else store and update run id
             val runId = locationRepository.startLocationUpdates()
             updateRunId(runId)
         }
