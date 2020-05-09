@@ -18,8 +18,11 @@
             android:id="@+id/action_LocationUpdateFragment_to_RunListFragment"
             app:destination="@id/RunListFragment" />
         <action
-            android:id="@+id/action_RunListFragment_to_FullscreenMapFragment"
+            android:id="@+id/action_LocationUpdateFragment_to_FullscreenMapFragment"
             app:destination="@id/FullscreenMapFragment" />
+        <action
+            android:id="@+id/action_LocationUpdateFragment_to_RunSummaryFragment"
+            app:destination="@id/RunSummaryFragment" />
     </fragment>
 
     <fragment
