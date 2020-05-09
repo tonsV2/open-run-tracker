@@ -23,21 +23,21 @@
 
             <TextView
                 android:id="@+id/timeOfDay"
-                android:text="Time of day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Time of day"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/primary_text"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/started"
-                android:text="Started"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/timeOfDay"
+                android:text="Started"
                 android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                android:layout_below="@id/timeOfDay" />
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -62,26 +62,77 @@
         app:layout_constraintStart_toStartOf="@id/summary"
         app:layout_constraintTop_toBottomOf="@id/summary">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardviewLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp">
 
+            <ImageView
+                android:id="@+id/durationIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_summary_duration"
+                app:backgroundTint="@color/primary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Duration" />
+                android:layout_marginTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingRight="8dp"
+                android:text="Duration"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/durationIcon"
+                app:layout_constraintStart_toEndOf="@id/durationIcon" />
+
+            <TextView
+                android:id="@+id/durationValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="value"
+                app:layout_constraintStart_toStartOf="@id/duration"
+                app:layout_constraintTop_toBottomOf="@id/duration" />
+
+            <ImageView
+                android:id="@+id/distanceIcon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/ic_summary_distance"
+                app:backgroundTint="@color/primary"
+                app:layout_constraintStart_toEndOf="@id/duration"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
                 android:text="Distance"
-                android:layout_below="@id/duration" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/primary_text"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toRightOf="@id/distanceIcon"
+                app:layout_constraintStart_toEndOf="@id/distanceIcon"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/distanceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:text="value"
+                app:layout_constraintStart_toStartOf="@id/distance"
+                app:layout_constraintTop_toBottomOf="@id/distance" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -93,7 +144,8 @@
         android:paddingBottom="0dp"
         android:text="Map"
         app:layout_constraintStart_toStartOf="@id/summaryContainer"
-        app:layout_constraintTop_toBottomOf="@id/summaryContainer" />
+        app:layout_constraintTop_toBottomOf="@id/summaryContainer"
+        app:layout_constraintVertical_weight="2" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/mapContainer"
@@ -114,10 +166,10 @@
             android:id="@+id/fullscreenButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_fullscreen"
-            app:backgroundTint="@color/primary"
             android:layout_gravity="end"
-            android:layout_margin="6dp" />
+            android:layout_margin="6dp"
+            app:backgroundTint="@color/primary"
+            app:srcCompat="@drawable/ic_summary_fullscreen" />
 
     </androidx.cardview.widget.CardView>
 

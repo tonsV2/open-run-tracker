@@ -24,8 +24,8 @@ class RunSummaryFragment : MapFragment(R.layout.fragment_run_summary) {
         runSummaryViewModel.getRun(runId).observe(viewLifecycleOwner) {
             timeOfDay.text = "${dayTimeString(it.startDateTime.hour)} run"
             started.text = DateTimeFormatter.RFC_1123_DATE_TIME.format(it.startDateTime.atZone(ZoneId.systemDefault()))
-            duration.text = it.duration().toHHMMSS()
-            distance.text = "%.2f km".format(it.distance?.div(1_000))
+            durationValue.text = it.duration().toHHMMSS()
+            distanceValue.text = "%.2f km".format(it.distance?.div(1_000))
         }
 
         fullscreenButton.setOnClickListener {
