@@ -3,6 +3,7 @@ package dk.fitfit.runtracker.ui
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -14,37 +15,19 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import dk.fitfit.runtracker.BuildConfig
-import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.ui.exception.RunIdNotDefinedException
-import dk.fitfit.runtracker.viewmodels.RunListViewModel
+import dk.fitfit.runtracker.viewmodels.RunSummaryViewModel
 import kotlinx.android.synthetic.main.fragment_map.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
-    private val runListViewModel: RunListViewModel by viewModel()
+abstract class MapFragment(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId), OnMapReadyCallback {
+    protected val runSummaryViewModel by viewModel<RunSummaryViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         map.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.map_fragment_label)
-
         map.getMapAsync(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        map.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        map.onPause()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        map.onLowMemory()
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -52,7 +35,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             val runId = bundle.getLong(EXTRA_ID)
             if (runId == 0L) throw RunIdNotDefinedException()
 
-            runListViewModel.getLocations(runId).observe(viewLifecycleOwner) { locations ->
+            runSummaryViewModel.getLocations(runId).observe(viewLifecycleOwner) { locations ->
                 if (BuildConfig.DEBUG) {
                     drawDebugRoute(map, locations)
                 }
@@ -112,6 +95,21 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
             boundsBuilder.include(it)
         }
         return boundsBuilder.build()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        map.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        map.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        map.onLowMemory()
     }
 
     companion object {

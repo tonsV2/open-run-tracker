@@ -18,8 +18,8 @@
             android:id="@+id/action_LocationUpdateFragment_to_RunListFragment"
             app:destination="@id/RunListFragment" />
         <action
-            android:id="@+id/action_RunListFragment_to_MapFragment"
-            app:destination="@id/MapFragment" />
+            android:id="@+id/action_RunListFragment_to_FullscreenMapFragment"
+            app:destination="@id/FullscreenMapFragment" />
     </fragment>
 
     <fragment
@@ -40,13 +40,13 @@
         tools:layout="@layout/fragment_run_summary">
 
         <action
-            android:id="@+id/action_RunSummaryFragment_to_MapFragment"
-            app:destination="@id/MapFragment" />
+            android:id="@+id/action_RunSummaryFragment_to_FullscreenMapFragment"
+            app:destination="@id/FullscreenMapFragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/MapFragment"
-        android:name="dk.fitfit.runtracker.ui.MapFragment"
+        android:id="@+id/FullscreenMapFragment"
+        android:name="dk.fitfit.runtracker.ui.FullscreenMapFragment"
         android:label="@string/map_fragment_label"
         tools:layout="@layout/fragment_map">
     </fragment>
