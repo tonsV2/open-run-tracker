@@ -61,10 +61,8 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
             distance.text = it
         }
 
-        locationUpdateViewModel.speed.observe(viewLifecycleOwner) {
-            if (it != null) {
-                speed.text = "%.1f km/h".format((it * 3600) / 1000)
-            }
+        locationUpdateViewModel.speedString.observe(viewLifecycleOwner) {
+            speed.text = it
         }
 
         locationUpdateViewModel.receivingLocationUpdates.observe(viewLifecycleOwner) {

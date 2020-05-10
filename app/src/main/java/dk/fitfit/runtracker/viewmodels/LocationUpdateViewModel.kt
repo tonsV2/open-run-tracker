@@ -53,9 +53,17 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     val receivingLocationUpdates: LiveData<Boolean> = locationRepository.receivingLocationUpdates
 
-    val speed: LiveData<Float?> = Transformations.switchMap(_runId) {
+    private val speed: LiveData<Float?> = Transformations.switchMap(_runId) {
         liveData {
             emitSource(locationRepository.speed(it))
+        }
+    }
+
+    val speedString = Transformations.map(speed) {
+        if (it != null) {
+            "%.1f km/h".format((it * 3600) / 1000)
+        } else {
+            ""
         }
     }
 
