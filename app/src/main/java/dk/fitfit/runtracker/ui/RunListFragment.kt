@@ -33,7 +33,7 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
         runRecyclerView.adapter = adapter
 
         runListViewModel.runs.observe(viewLifecycleOwner) {
-            if(it.isEmpty()) {
+            if (it.isEmpty()) {
                 runRecyclerView.visibility = GONE
                 emptyView.visibility = VISIBLE
             } else {

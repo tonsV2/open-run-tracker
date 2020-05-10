@@ -98,7 +98,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
         }
 
         locationUpdateViewModel.endOfRunStatus.observe(viewLifecycleOwner) {
-            when(it) {
+            when (it) {
                 is EndOfRunStatus.Success -> {
                     val bundle = bundleOf(MapFragment.EXTRA_ID to it.runId)
                     findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunSummaryFragment, bundle)

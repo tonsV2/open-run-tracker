@@ -42,7 +42,7 @@ class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : Lis
 
         init {
             itemView.setOnClickListener {
-                if(adapterPosition != NO_POSITION) {
+                if (adapterPosition != NO_POSITION) {
                     onItemClickListener(getItem(adapterPosition))
                 }
             }

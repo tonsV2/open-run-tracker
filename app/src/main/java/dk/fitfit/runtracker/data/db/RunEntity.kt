@@ -14,5 +14,9 @@ data class RunEntity(
 )
 
 fun RunEntity.duration(): Duration {
-    return if (endDataTime != null) { Duration.between(startDateTime, endDataTime) } else { Duration.ZERO }
+    return if (endDataTime != null) {
+        Duration.between(startDateTime, endDataTime)
+    } else {
+        Duration.ZERO
+    }
 }

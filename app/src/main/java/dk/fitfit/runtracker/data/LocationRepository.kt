@@ -11,10 +11,12 @@ import java.time.LocalDateTime
 private const val durationThreshold = 30
 private const val distanceThreshold = 50.0
 
-class LocationRepository(private val runDao: RunDao,
-                         private val locationDao: LocationDao,
-                         private val locationManager: LocationManager,
-                         private val routeUtils: RouteUtils) {
+class LocationRepository(
+    private val runDao: RunDao,
+    private val locationDao: LocationDao,
+    private val locationManager: LocationManager,
+    private val routeUtils: RouteUtils
+) {
 
     val receivingLocationUpdates: LiveData<Boolean> = locationManager.receivingLocationUpdates
 

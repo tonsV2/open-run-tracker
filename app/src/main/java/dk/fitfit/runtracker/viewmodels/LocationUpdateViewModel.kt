@@ -113,8 +113,8 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
     }
 
     sealed class EndOfRunStatus {
-        class Exceptional(val message: String): EndOfRunStatus()
-        class Success(val runId: Long): EndOfRunStatus()
+        class Exceptional(val message: String) : EndOfRunStatus()
+        class Success(val runId: Long) : EndOfRunStatus()
     }
 
     companion object {
