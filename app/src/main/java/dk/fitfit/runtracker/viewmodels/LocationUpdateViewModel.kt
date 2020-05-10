@@ -49,6 +49,8 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                     val speed = locationEntity.speed
                     emit("%.1f km/h".format((speed * 3600) / 1000))
                 }
+            } else {
+                return@liveData
             }
             delay(1_000)
         }
@@ -91,6 +93,8 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                 if (receivingLocationUpdates.value == true) {
                     val durationString = Duration.between(it.startDateTime, LocalDateTime.now()).toHHMMSS()
                     emit(durationString)
+                } else {
+                    return@liveData
                 }
                 delay(1_000)
             }
