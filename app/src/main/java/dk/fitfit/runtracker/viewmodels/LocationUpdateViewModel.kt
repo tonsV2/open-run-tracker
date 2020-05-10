@@ -98,18 +98,18 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         locationRepository.getRun(it)
     }
 
-    val duration: LiveData<String> = Transformations.switchMap(currentRun) {
+    val duration: LiveData<Duration> = Transformations.switchMap(currentRun) {
         liveData {
-            while (true) {
-                if (receivingLocationUpdates.value == true && it != null) {
-                    val durationString = Duration.between(it.startDateTime, LocalDateTime.now()).toHHMMSS()
-                    emit(durationString)
-                } else {
-                    return@liveData
-                }
+            while (receivingLocationUpdates.value == true && it != null) {
+                val durationString = Duration.between(it.startDateTime, LocalDateTime.now())
+                emit(durationString)
                 delay(1_000)
             }
         }
+    }
+
+    val durationString = Transformations.map(duration) {
+        it.toHHMMSS()
     }
 
     sealed class EndOfRunStatus {

@@ -53,7 +53,7 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
             updateChart(it, chartColors)
         }
 
-        locationUpdateViewModel.duration.observe(viewLifecycleOwner) {
+        locationUpdateViewModel.durationString.observe(viewLifecycleOwner) {
             duration.text = it
         }
 
