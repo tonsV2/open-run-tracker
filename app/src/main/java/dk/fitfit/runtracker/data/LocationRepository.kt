@@ -39,7 +39,7 @@ class LocationRepository(private val runDao: RunDao,
 
         if (distance < distanceThreshold) {
             runDao.delete(run)
-            throw RunNotLoggedException("Distance too short! Only $duration meters logged, threshold is $distanceThreshold")
+            throw RunNotLoggedException("Distance too short! Only $distance meters logged, threshold is $distanceThreshold")
         }
 
         run.distance = distance
