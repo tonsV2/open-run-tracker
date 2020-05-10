@@ -55,6 +55,8 @@ class LocationRepository(private val runDao: RunDao,
     fun getRun(id: Long): LiveData<RunEntity> = runDao.getLiveRun(id)
 
     fun getLocations(runId: Long): LiveData<List<LocationEntity>> = locationDao.getLiveLocations(runId)
+
+    fun speed(runId: Long): LiveData<Float?> = locationDao.speed(runId)
 }
 
 class RunNotLoggedException(message: String) : RuntimeException(message)

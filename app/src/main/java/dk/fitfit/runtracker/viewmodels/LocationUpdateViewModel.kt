@@ -53,18 +53,9 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     val receivingLocationUpdates: LiveData<Boolean> = locationRepository.receivingLocationUpdates
 
-    val speed: LiveData<String> = liveData {
-        while (true) {
-            if (receivingLocationUpdates.value == true && locations.value?.isEmpty() != true) {
-                val locationEntity = locations.value?.first()
-                if (locationEntity != null) {
-                    val speed = locationEntity.speed
-                    emit("%.1f km/h".format((speed * 3600) / 1000))
-                }
-            } else {
-                return@liveData
-            }
-            delay(1_000)
+    val speed: LiveData<Float?> = Transformations.switchMap(_runId) {
+        liveData {
+            emitSource(locationRepository.speed(it))
         }
     }
 
