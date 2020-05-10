@@ -1,10 +1,7 @@
 package dk.fitfit.runtracker.data.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 private const val SELECT_RUN_BY_ID_SQL = "SELECT * FROM RunEntity WHERE id = :id"
 
@@ -26,4 +23,7 @@ interface RunDao {
     fun addRun(runEntity: RunEntity): Long
 
     fun newRun() = addRun(RunEntity())
+
+    @Delete
+    fun delete(runEntity: RunEntity)
 }

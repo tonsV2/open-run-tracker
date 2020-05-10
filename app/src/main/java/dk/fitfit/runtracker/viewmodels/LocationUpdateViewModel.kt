@@ -1,19 +1,25 @@
 package dk.fitfit.runtracker.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.*
 import dk.fitfit.runtracker.data.LocationRepository
 import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.data.db.RunEntity
 import dk.fitfit.runtracker.utils.RouteUtils
 import dk.fitfit.runtracker.utils.toHHMMSS
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
 
+private const val TAG = "LocationUpdateViewModel"
+
 class LocationUpdateViewModel(private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
     private val _runId: MutableLiveData<Long> = MutableLiveData()
+    val endOfRunStatus: MutableLiveData<EndOfRunStatus> = MutableLiveData()
 
     val runId: Long?
         get() = _runId.value
@@ -24,17 +30,23 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     fun startLocationUpdates() {
         viewModelScope.launch(IO) {
-            // If shared preferences has run id use that else store and update run id
             val runId = locationRepository.startLocationUpdates()
             updateRunId(runId)
         }
     }
 
     fun stopLocationUpdates() {
-        viewModelScope.launch(IO) {
+        val exceptionHandler = CoroutineExceptionHandler { _, exception ->
+            Log.d(TAG, "stopLocationUpdates: $exception")
+            endOfRunStatus.postValue(EndOfRunStatus.Exceptional(exception.message.toString()))
+        }
+
+        val coroutineScope = CoroutineScope(IO)
+        coroutineScope.launch(exceptionHandler) {
             val runId = _runId.value
             if (runId != null) {
                 locationRepository.stopLocationUpdates(runId)
+                endOfRunStatus.postValue(EndOfRunStatus.Success(runId))
             }
         }
     }
@@ -90,7 +102,7 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
     val duration: LiveData<String> = Transformations.switchMap(currentRun) {
         liveData {
             while (true) {
-                if (receivingLocationUpdates.value == true) {
+                if (receivingLocationUpdates.value == true && it != null) {
                     val durationString = Duration.between(it.startDateTime, LocalDateTime.now()).toHHMMSS()
                     emit(durationString)
                 } else {
@@ -99,6 +111,11 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
                 delay(1_000)
             }
         }
+    }
+
+    sealed class EndOfRunStatus {
+        class Exceptional(val message: String): EndOfRunStatus()
+        class Success(val runId: Long): EndOfRunStatus()
     }
 
     companion object {

@@ -20,6 +20,7 @@ import com.github.mikephil.charting.data.PieEntry
 import dk.fitfit.runtracker.R
 import dk.fitfit.runtracker.utils.hasPermission
 import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
+import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel.EndOfRunStatus
 import kotlinx.android.synthetic.main.fragment_location_update.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -93,10 +94,18 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         button_stop.setOnLongClickListener {
             locationUpdateViewModel.stopLocationUpdates()
-            val runId = locationUpdateViewModel.runId
-            val bundle = bundleOf(MapFragment.EXTRA_ID to runId)
-            findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunSummaryFragment, bundle)
             true
+        }
+
+        locationUpdateViewModel.endOfRunStatus.observe(viewLifecycleOwner) {
+            when(it) {
+                is EndOfRunStatus.Success -> {
+                    val bundle = bundleOf(MapFragment.EXTRA_ID to it.runId)
+                    findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunSummaryFragment, bundle)
+                }
+                is EndOfRunStatus.Exceptional -> Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+            locationUpdateViewModel.endOfRunStatus.postValue(null)
         }
 
         button_run_list_enabled.setOnClickListener {

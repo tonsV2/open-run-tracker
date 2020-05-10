@@ -1,15 +1,15 @@
 package dk.fitfit.runtracker.data
 
 import androidx.lifecycle.LiveData
-import dk.fitfit.runtracker.data.db.LocationDao
-import dk.fitfit.runtracker.data.db.LocationEntity
-import dk.fitfit.runtracker.data.db.RunDao
-import dk.fitfit.runtracker.data.db.RunEntity
+import dk.fitfit.runtracker.data.db.*
 import dk.fitfit.runtracker.utils.RouteUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+
+private const val durationThreshold = 30
+private const val distanceThreshold = 50.0
 
 class LocationRepository(private val runDao: RunDao,
                          private val locationDao: LocationDao,
@@ -25,11 +25,25 @@ class LocationRepository(private val runDao: RunDao,
     }
 
     fun stopLocationUpdates(runId: Long) {
+        locationManager.stopLocationUpdates()
+
         val run = runDao.getRun(runId)
         run.endDataTime = LocalDateTime.now()
-        run.distance = routeUtils.calculateDistance(locationDao.getLocations(runId))
+        val distance = routeUtils.calculateDistance(locationDao.getLocations(runId))
+        val duration = run.duration().seconds
+
+        if (duration < durationThreshold) {
+            runDao.delete(run)
+            throw RunNotLoggedException("Duration too short! Only $duration seconds logged, threshold is $durationThreshold")
+        }
+
+        if (distance < distanceThreshold) {
+            runDao.delete(run)
+            throw RunNotLoggedException("Distance too short! Only $duration meters logged, threshold is $distanceThreshold")
+        }
+
+        run.distance = distance
         runDao.updateRun(run)
-        locationManager.stopLocationUpdates()
     }
 
     fun addLocations(locationEntities: List<LocationEntity>) {
@@ -42,3 +56,5 @@ class LocationRepository(private val runDao: RunDao,
 
     fun getLocations(runId: Long): LiveData<List<LocationEntity>> = locationDao.getLiveLocations(runId)
 }
+
+class RunNotLoggedException(message: String) : RuntimeException(message)
