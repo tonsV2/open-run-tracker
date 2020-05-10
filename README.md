@@ -1,6 +1,9 @@
 # Open Run Tracker
 Open source run tracker build for fun...
 
+# Setup
+`app/src/main/res/values/google_maps_api_key.xml` should be populated with a valid Google Maps API key. Same goes for `app/src/release/res/values/google_maps_api_key.xml`
+
 # TODO
 * Delete from history
 * Export to GPX
