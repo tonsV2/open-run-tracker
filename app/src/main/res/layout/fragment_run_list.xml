@@ -11,4 +11,12 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/run_item" />
 
+    <TextView
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/run_list_no_data" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

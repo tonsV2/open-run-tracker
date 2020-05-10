@@ -2,6 +2,8 @@ package dk.fitfit.runtracker.ui
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -31,7 +33,14 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
         runRecyclerView.adapter = adapter
 
         runListViewModel.runs.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            if(it.isEmpty()) {
+                runRecyclerView.visibility = GONE
+                emptyView.visibility = VISIBLE
+            } else {
+                runRecyclerView.visibility = VISIBLE
+                emptyView.visibility = GONE
+                adapter.submitList(it)
+            }
         }
     }
 }

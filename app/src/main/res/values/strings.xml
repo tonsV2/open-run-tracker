@@ -18,6 +18,7 @@
     <string name="enable_fine_location_button_text">Approve Location Access</string>
 
     <string name="run_list_fragment_label">History</string>
+    <string name="run_list_no_data">No data recorded!</string>
     <string name="run_summary_fragment_label">Summary</string>
     <string name="map_fragment_label">Map</string>
 
