@@ -17,7 +17,7 @@ interface RunDao {
     fun getRun(id: Long): RunEntity
 
     @Update
-    fun updateRun(runEntity: RunEntity)
+    fun update(runEntity: RunEntity)
 
     @Insert
     fun addRun(runEntity: RunEntity): Long

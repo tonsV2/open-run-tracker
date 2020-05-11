@@ -45,7 +45,7 @@ class LocationRepository(
         }
 
         run.distance = distance
-        runDao.updateRun(run)
+        runDao.update(run)
     }
 
     fun addLocations(locationEntities: List<LocationEntity>) {
