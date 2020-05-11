@@ -20,9 +20,9 @@ interface RunDao {
     fun update(runEntity: RunEntity)
 
     @Insert
-    fun addRun(runEntity: RunEntity): Long
+    fun insert(runEntity: RunEntity): Long
 
-    fun newRun() = addRun(RunEntity())
+    fun newRun() = insert(RunEntity())
 
     @Delete
     fun delete(runEntity: RunEntity)
