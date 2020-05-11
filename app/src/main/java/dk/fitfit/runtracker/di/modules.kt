@@ -29,7 +29,7 @@ val repositoryModule = module {
 
 @JvmField
 val viewModelModule = module {
-    viewModel { LocationUpdateViewModel(get(), get()) }
+    viewModel { LocationUpdateViewModel(get()) }
     viewModel { RunListViewModel(get(), get()) }
     viewModel { RunSummaryViewModel(get(), get()) }
 }

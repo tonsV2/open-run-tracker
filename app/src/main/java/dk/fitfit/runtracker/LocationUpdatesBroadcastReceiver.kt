@@ -8,19 +8,46 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import androidx.work.*
 import com.google.android.gms.location.LocationResult
 import dk.fitfit.runtracker.data.LocationRepository
+import dk.fitfit.runtracker.data.RunRepository
 import dk.fitfit.runtracker.data.db.LocationEntity
+import dk.fitfit.runtracker.utils.RouteUtils
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import kotlin.system.measureTimeMillis
 
 private const val TAG = "LUBroadcastReceiver"
 
+class UpdateRunWorker(appContext: Context, workerParams: WorkerParameters) : Worker(appContext, workerParams), KoinComponent {
+    private val locationRepository: LocationRepository by inject()
+    private val runRepository: RunRepository by inject()
+    private val routeUtils: RouteUtils by inject()
+    private val runId = workerParams.inputData.getLong("runId", 0)
+
+    override fun doWork(): Result {
+        val measureTimeMillis = measureTimeMillis {
+            Log.d(TAG, "doWork: started")
+            val run = runRepository.getRun(runId)
+            val allLocations = locationRepository.getLocations(runId)
+            Log.d(TAG, "Locations: ${allLocations.size}")
+            val calculateDistance = routeUtils.calculateDistance(allLocations)
+            run.distance = calculateDistance
+            run.endDataTime = LocalDateTime.now()
+            runRepository.update(run)
+        }
+        Log.d(TAG, "doWork time: $measureTimeMillis")
+        return Result.success()
+    }
+}
+
 class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     private val locationRepository: LocationRepository by inject()
+    private val workManager = WorkManager.getInstance()
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == ACTION_PROCESS_UPDATES) {
@@ -29,9 +56,20 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
                 val locations = locationResult.locations.map { it.toLocationEntity(runId) }
                 if (locations.isNotEmpty()) {
                     locationRepository.addLocations(locations)
+
+                    updateRun(runId)
                 }
             }
         }
+    }
+
+    private fun updateRun(runId: Long) {
+        val inputData = Data.Builder().putLong("runId", runId).build()
+        val updateRunWorkRequest = OneTimeWorkRequest.Builder(UpdateRunWorker::class.java)
+            .setInputData(inputData)
+            .addTag("UPDATE_RUN")
+            .build()
+        workManager.enqueueUniqueWork("UPDATE_RUN", ExistingWorkPolicy.KEEP, updateRunWorkRequest)
     }
 
     private fun getRunIdWorkAround(intent: Intent): Long {

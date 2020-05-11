@@ -3,21 +3,18 @@ package dk.fitfit.runtracker.viewmodels
 import android.util.Log
 import androidx.lifecycle.*
 import dk.fitfit.runtracker.data.LocationRepository
-import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.data.db.RunEntity
-import dk.fitfit.runtracker.utils.RouteUtils
+import dk.fitfit.runtracker.data.db.duration
 import dk.fitfit.runtracker.utils.toHHMMSS
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.Duration
-import java.time.LocalDateTime
 
 private const val TAG = "LocationUpdateViewModel"
 
-class LocationUpdateViewModel(private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
+class LocationUpdateViewModel(private val locationRepository: LocationRepository) : ViewModel() {
     private val _runId: MutableLiveData<Long> = MutableLiveData()
     val endOfRunStatus: MutableLiveData<EndOfRunStatus> = MutableLiveData()
 
@@ -41,8 +38,7 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
             endOfRunStatus.postValue(EndOfRunStatus.Exceptional(exception.message.toString()))
         }
 
-        val coroutineScope = CoroutineScope(IO)
-        coroutineScope.launch(exceptionHandler) {
+        CoroutineScope(IO).launch(exceptionHandler) {
             val runId = _runId.value
             if (runId != null) {
                 locationRepository.stopLocationUpdates(runId)
@@ -67,49 +63,38 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
         }
     }
 
-    private val locations: LiveData<List<LocationEntity>> = Transformations.switchMap(_runId) {
-        locationRepository.getLocations(it)
-    }
-
-    private val distanceMeters: LiveData<Double> = Transformations.switchMap(locations) {
-        liveData {
-            emit(routeUtils.calculateDistance(it))
-        }
-    }
-
-    val lapProgress: LiveData<Int> = Transformations.switchMap(distanceMeters) {
-        liveData {
-            val lapMeters = if (it < LAP_IN_METERS) {
-                it
-            } else {
-                it % LAP_IN_METERS
-            }
-            emit(lapMeters.toInt())
-        }
-    }
-
-    val distance: LiveData<String> = Transformations.switchMap(distanceMeters) {
-        liveData {
-            emit("%.2f km".format(it / 1_000))
-        }
-    }
-
     private val currentRun: LiveData<RunEntity> = Transformations.switchMap(_runId) {
         locationRepository.getRun(it)
     }
 
-    val duration: LiveData<Duration> = Transformations.switchMap(currentRun) {
+    val lapProgress: LiveData<Int> = Transformations.switchMap(currentRun) {
         liveData {
-            while (receivingLocationUpdates.value == true && it != null) {
-                val durationString = Duration.between(it.startDateTime, LocalDateTime.now())
-                emit(durationString)
-                delay(1_000)
+            val distance = it.distance
+            if (distance != null) {
+                val lapMeters = if (distance < LAP_IN_METERS) {
+                    distance
+                } else {
+                    distance % LAP_IN_METERS
+                }
+                emit(lapMeters.toInt())
             }
         }
     }
 
-    val durationString = Transformations.map(duration) {
-        it.toHHMMSS()
+    val distance: LiveData<String> = Transformations.switchMap(currentRun) {
+        liveData {
+            val value = "%.2f km".format(it.distance?.div(1_000))
+            emit(value)
+        }
+    }
+
+    val durationString: LiveData<String> = Transformations.switchMap(currentRun) {
+        liveData {
+            while (receivingLocationUpdates.value == true && it != null) {
+                emit(it.duration().toHHMMSS())
+                delay(1_000)
+            }
+        }
     }
 
     sealed class EndOfRunStatus {

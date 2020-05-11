@@ -11,6 +11,6 @@ class RunSummaryViewModel(private val runRepository: RunRepository, private val 
     }
 
     fun getLocations(runId: Long) = liveData {
-        emitSource(locationRepository.getLocations(runId))
+        emitSource(locationRepository.getLiveLocations(runId))
     }
 }

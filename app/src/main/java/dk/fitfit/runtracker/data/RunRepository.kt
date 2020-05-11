@@ -9,5 +9,7 @@ class RunRepository(private val runDao: RunDao) {
 
     fun getLiveRun(runId: Long): LiveData<RunEntity> = runDao.getLiveRun(runId)
 
+    fun getRun(runId: Long): RunEntity = runDao.getRun(runId)
+
     fun update(run: RunEntity) = runDao.update(run)
 }
