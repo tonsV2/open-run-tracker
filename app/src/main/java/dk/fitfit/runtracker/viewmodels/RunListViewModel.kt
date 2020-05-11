@@ -11,8 +11,4 @@ class RunListViewModel(private val runRepository: RunRepository, private val loc
     val runs: LiveData<List<RunEntity>> = liveData {
         emitSource(runRepository.getRuns())
     }
-
-    fun getLocations(runId: Long) = liveData {
-        emitSource(locationRepository.getLocations(runId))
-    }
 }
