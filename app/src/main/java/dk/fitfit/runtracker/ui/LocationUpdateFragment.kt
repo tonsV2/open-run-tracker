@@ -2,6 +2,8 @@ package dk.fitfit.runtracker.ui
 
 import android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -10,6 +12,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
@@ -33,6 +38,8 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
         if (!context.hasPermission(ACCESS_FINE_LOCATION) || !context.hasPermission(ACCESS_BACKGROUND_LOCATION)) {
             findNavController().navigate(R.id.action_LocationUpdateFragment_to_PermissionRequestFragment)
         }
+
+        createNotificationChannel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,6 +89,12 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
                 false -> GONE
                 true -> VISIBLE
             }
+
+            if (it) {
+                showNotification()
+            } else {
+
+            }
         }
 
         button_start.setOnClickListener {
@@ -110,6 +123,40 @@ class LocationUpdateFragment : Fragment(R.layout.fragment_location_update) {
 
         button_run_list_enabled.setOnClickListener {
             findNavController().navigate(R.id.action_LocationUpdateFragment_to_RunListFragment)
+        }
+    }
+
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "getString(R.string.channel_name)"
+            val descriptionText = "getString(R.string.channel_description)"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("CHANNEL_ID", name, importance).apply {
+//                description = descriptionText
+            }
+            val c = context
+            if (c != null) {
+                val notificationManager = NotificationManagerCompat.from(c)
+                notificationManager.createNotificationChannel(channel)
+            }
+        }
+    }
+
+    private fun showNotification() {
+        val notificationId = 0
+        val c = context
+        if (c != null)  {
+            val builder = NotificationCompat.Builder(c, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("textTitle")
+                .setContentText("textContent")
+                .setPriority(PRIORITY_DEFAULT)
+
+            with(NotificationManagerCompat.from(c)) {
+                notify(notificationId, builder.build())
+            }
         }
     }
 

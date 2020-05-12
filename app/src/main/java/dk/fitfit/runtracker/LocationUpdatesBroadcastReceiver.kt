@@ -14,6 +14,9 @@ import dk.fitfit.runtracker.data.LocationRepository
 import dk.fitfit.runtracker.data.RunRepository
 import dk.fitfit.runtracker.data.db.LocationEntity
 import dk.fitfit.runtracker.utils.RouteUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.time.Instant
@@ -40,7 +43,7 @@ class UpdateRunWorker(appContext: Context, workerParams: WorkerParameters) : Wor
             run.endDataTime = LocalDateTime.now()
             runRepository.update(run)
         }
-        Log.d(TAG, "doWork time: $measureTimeMillis")
+        Log.d(TAG, "updateRun workmanager time: $measureTimeMillis")
         return Result.success()
     }
 }
@@ -48,6 +51,9 @@ class UpdateRunWorker(appContext: Context, workerParams: WorkerParameters) : Wor
 class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
     private val locationRepository: LocationRepository by inject()
     private val workManager = WorkManager.getInstance()
+
+    private val runRepository: RunRepository by inject()
+    private val routeUtils: RouteUtils by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == ACTION_PROCESS_UPDATES) {
@@ -57,13 +63,33 @@ class LocationUpdatesBroadcastReceiver : BroadcastReceiver(), KoinComponent {
                 if (locations.isNotEmpty()) {
                     locationRepository.addLocations(locations)
 
-                    updateRun(runId)
+                    val measureTimeMillis = measureTimeMillis {
+                        queueUpdateRun(runId)
+//                        updateRunCoroutine(runId)
+                    }
+                    Log.d(TAG, "Launch updateRun time: $measureTimeMillis")
                 }
             }
         }
     }
 
-    private fun updateRun(runId: Long) {
+    private fun updateRunCoroutine(runId: Long) {
+        CoroutineScope(IO).launch {
+            val measureTimeMillis = measureTimeMillis {
+                Log.d(TAG, "doWork: started")
+                val run = runRepository.getRun(runId)
+                val allLocations = locationRepository.getLocations(runId)
+                Log.d(TAG, "Locations: ${allLocations.size}")
+                val calculateDistance = routeUtils.calculateDistance(allLocations)
+                run.distance = calculateDistance
+                run.endDataTime = LocalDateTime.now()
+                runRepository.update(run)
+            }
+            Log.d(TAG, "updateRun coroutine time: $measureTimeMillis")
+        }
+    }
+
+    private fun queueUpdateRun(runId: Long) {
         val inputData = Data.Builder().putLong("runId", runId).build()
         val updateRunWorkRequest = OneTimeWorkRequest.Builder(UpdateRunWorker::class.java)
             .setInputData(inputData)
