@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.run_item.view.*
 import java.time.Duration
 
 class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : ListAdapter<RunEntity, RunListAdapter.RunHolder>(DIFF_CALLBACK) {
+    var onItemLongClickListener: (RunEntity) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RunHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.run_item, parent, false)
         return RunHolder(itemView)
@@ -45,6 +47,14 @@ class RunListAdapter(private val onItemClickListener: (RunEntity) -> Unit) : Lis
                 if (adapterPosition != NO_POSITION) {
                     onItemClickListener(getItem(adapterPosition))
                 }
+            }
+
+            itemView.setOnLongClickListener {
+                if (adapterPosition != NO_POSITION) {
+                    val item = getItem(adapterPosition)
+                    onItemLongClickListener(item)
+                }
+                true
             }
         }
     }
