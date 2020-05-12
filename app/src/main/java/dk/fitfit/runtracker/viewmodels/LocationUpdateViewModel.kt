@@ -87,12 +87,7 @@ class LocationUpdateViewModel(private val state: SavedStateHandle, private val l
 
     val lapProgress: LiveData<Int> = Transformations.switchMap(distanceMeters) {
         liveData {
-            val lapMeters = if (it < LAP_IN_METERS) {
-                it
-            } else {
-                it % LAP_IN_METERS
-            }
-            emit(lapMeters.toInt())
+            emit((it % LAP_IN_METERS).toInt())
         }
     }
 
