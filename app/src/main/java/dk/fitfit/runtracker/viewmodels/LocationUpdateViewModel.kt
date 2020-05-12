@@ -68,7 +68,7 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
     }
 
     private val locations: LiveData<List<LocationEntity>> = Transformations.switchMap(_runId) {
-        locationRepository.getLocations(it)
+        locationRepository.getLiveLocations(it)
     }
 
     private val distanceMeters: LiveData<Double> = Transformations.switchMap(locations) {

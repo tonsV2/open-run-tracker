@@ -56,7 +56,9 @@ class LocationRepository(
 
     fun getRun(id: Long): LiveData<RunEntity> = runDao.getLiveRun(id)
 
-    fun getLocations(runId: Long): LiveData<List<LocationEntity>> = locationDao.getLiveLocations(runId)
+    fun getLiveLocations(runId: Long): LiveData<List<LocationEntity>> = locationDao.getLiveLocations(runId)
+
+    fun getLocations(runId: Long): List<LocationEntity> = locationDao.getLocations(runId)
 
     fun speed(runId: Long): LiveData<Float?> = locationDao.speed(runId)
 }

@@ -6,6 +6,7 @@ import dk.fitfit.runtracker.data.LocationManager
 import dk.fitfit.runtracker.data.LocationRepository
 import dk.fitfit.runtracker.data.RunRepository
 import dk.fitfit.runtracker.data.db.RunDatabase
+import dk.fitfit.runtracker.utils.GpxWriter
 import dk.fitfit.runtracker.utils.RouteUtils
 import dk.fitfit.runtracker.viewmodels.LocationUpdateViewModel
 import dk.fitfit.runtracker.viewmodels.RunListViewModel
@@ -37,6 +38,7 @@ val viewModelModule = module {
 @JvmField
 val utils = module {
     single { RouteUtils() }
+    single { GpxWriter() }
 }
 
 fun provideDatabase(context: Context) = Room
