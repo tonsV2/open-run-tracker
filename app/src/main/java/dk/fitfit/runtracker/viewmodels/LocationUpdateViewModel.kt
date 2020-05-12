@@ -17,14 +17,22 @@ import java.time.LocalDateTime
 
 private const val TAG = "LocationUpdateViewModel"
 
-class LocationUpdateViewModel(private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
+class LocationUpdateViewModel(private val state: SavedStateHandle, private val locationRepository: LocationRepository, routeUtils: RouteUtils) : ViewModel() {
     private val _runId: MutableLiveData<Long> = MutableLiveData()
     val endOfRunStatus: MutableLiveData<EndOfRunStatus> = MutableLiveData()
+
+    init {
+        val runId = state.get<Long>(RUN_ID_STATE_KEY)
+        if (runId != null) {
+            updateRunId(runId)
+        }
+    }
 
     val runId: Long?
         get() = _runId.value
 
     private fun updateRunId(runId: Long) {
+        state.set(RUN_ID_STATE_KEY, runId)
         _runId.postValue(runId)
     }
 
@@ -119,5 +127,6 @@ class LocationUpdateViewModel(private val locationRepository: LocationRepository
 
     companion object {
         private const val LAP_IN_METERS = 1_000
+        private const val RUN_ID_STATE_KEY = "run-id"
     }
 }

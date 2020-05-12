@@ -1,6 +1,7 @@
 package dk.fitfit.runtracker.di
 
 import android.content.Context
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import dk.fitfit.runtracker.data.LocationManager
 import dk.fitfit.runtracker.data.LocationRepository
@@ -30,7 +31,8 @@ val repositoryModule = module {
 
 @JvmField
 val viewModelModule = module {
-    viewModel { LocationUpdateViewModel(get(), get()) }
+    single { SavedStateHandle() }
+    viewModel { LocationUpdateViewModel(get(), get(), get()) }
     viewModel { RunListViewModel(get(), get()) }
     viewModel { RunSummaryViewModel(get(), get()) }
 }
