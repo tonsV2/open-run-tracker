@@ -64,9 +64,8 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
 
     private fun itemLongClick(run: RunEntity) {
         val runId = run.id
-        val items = arrayOf<CharSequence>("Export")
+        val items = arrayOf<CharSequence>("Export run as GPX file")
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-        builder.setTitle("Select The Action")
         builder.setItems(items) { _, item ->
             CoroutineScope(IO).launch {
                 val locations = locationRepository.getLocations(runId)
