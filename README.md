@@ -5,6 +5,11 @@ Open source run tracker build for fun...
 `app/src/main/res/values/google_maps_api_key.xml` should be populated with a valid Google Maps API key. Same goes for `app/src/release/res/values/google_maps_api_key.xml`
 
 # TODO
+* Proper permission handling...
+** Show proper text on request screen
+** If background GPS isn't select show message that it's important
+* Create dedicated MapLocationViewModel... Only updateRunId method and locations
+* Detect GPS single
 * Delete from history
 * Show notification when app isn't in focus
 * Settings
@@ -13,6 +18,7 @@ Open source run tracker build for fun...
 ** Show notification
 ** Theme
 * Dark theme
+** Make history icon black... Atleast not white
 * Backend for storage
 * Web interface
 * Login
