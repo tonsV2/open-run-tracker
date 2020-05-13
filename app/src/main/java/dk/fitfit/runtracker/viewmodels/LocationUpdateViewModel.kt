@@ -68,11 +68,7 @@ class LocationUpdateViewModel(private val state: SavedStateHandle, private val l
     }
 
     val speedString = Transformations.map(speed) {
-        if (it != null) {
-            "%.1f km/h".format((it * 3600) / 1000)
-        } else {
-            ""
-        }
+        "%.1f km/h".format(((it ?: 0f) * 3600) / 1000)
     }
 
     private val locations: LiveData<List<LocationEntity>> = Transformations.switchMap(_runId) {
