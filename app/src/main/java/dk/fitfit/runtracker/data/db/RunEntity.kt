@@ -10,6 +10,8 @@ data class RunEntity(
     val startDateTime: LocalDateTime = LocalDateTime.now(),
     var endDataTime: LocalDateTime? = null,
     var distance: Double? = null,
+    var descent: Double? = null,
+    var ascend: Double? = null,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 )
 

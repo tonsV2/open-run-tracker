@@ -31,7 +31,8 @@ class LocationRepository(
 
         val run = runDao.getRun(runId)
         run.endDataTime = LocalDateTime.now()
-        val distance = routeUtils.calculateDistance(locationDao.getLocations(runId))
+        val locations = locationDao.getLocations(runId)
+        val distance = routeUtils.calculateDistance(locations)
         val duration = run.duration().seconds
 
         if (duration < durationThreshold) {
@@ -45,6 +46,10 @@ class LocationRepository(
         }
 
         run.distance = distance
+
+        run.ascend = routeUtils.calculateAscend(locations)
+        run.descent = routeUtils.calculateDescent(locations)
+
         runDao.update(run)
     }
 

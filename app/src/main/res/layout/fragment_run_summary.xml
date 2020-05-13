@@ -63,74 +63,154 @@
         app:layout_constraintTop_toBottomOf="@id/summary">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cardviewLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/durationIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="@drawable/ic_summary_duration"
-                app:backgroundTint="@color/primary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/duration"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardviewLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:paddingEnd="8dp"
-                android:paddingRight="8dp"
-                android:text="Duration"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/durationIcon"
-                app:layout_constraintStart_toEndOf="@id/durationIcon" />
+                android:padding="8dp">
 
-            <TextView
-                android:id="@+id/durationValue"
+                <ImageView
+                    android:id="@+id/durationIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/ic_summary_duration"
+                    app:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
+                    android:text="Duration"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/durationIcon"
+                    app:layout_constraintStart_toEndOf="@id/durationIcon" />
+
+                <TextView
+                    android:id="@+id/durationValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    app:layout_constraintStart_toStartOf="@id/duration"
+                    app:layout_constraintTop_toBottomOf="@id/duration" />
+
+                <ImageView
+                    android:id="@+id/distanceIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/ic_summary_distance"
+                    app:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toEndOf="@id/duration"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:text="Distance"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/distanceIcon"
+                    app:layout_constraintStart_toEndOf="@id/distanceIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/distanceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:text="value"
+                    app:layout_constraintStart_toStartOf="@id/distance"
+                    app:layout_constraintTop_toBottomOf="@id/distance" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardviewLayoutRow1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="value"
-                app:layout_constraintStart_toStartOf="@id/duration"
-                app:layout_constraintTop_toBottomOf="@id/duration" />
+                android:padding="8dp"
+                app:layout_constraintStart_toStartOf="@id/cardviewLayout"
+                app:layout_constraintTop_toBottomOf="@id/cardviewLayout">
 
-            <ImageView
-                android:id="@+id/distanceIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="@drawable/ic_summary_distance"
-                app:backgroundTint="@color/primary"
-                app:layout_constraintStart_toEndOf="@id/duration"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/ascendIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/ic_summary_ascend"
+                    app:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
-                android:text="Distance"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textColor="@color/primary_text"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/distanceIcon"
-                app:layout_constraintStart_toEndOf="@id/distanceIcon"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/ascend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
+                    android:text="Ascend"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/ascendIcon"
+                    app:layout_constraintStart_toEndOf="@id/ascendIcon" />
 
-            <TextView
-                android:id="@+id/distanceValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
-                android:text="value"
-                app:layout_constraintStart_toStartOf="@id/distance"
-                app:layout_constraintTop_toBottomOf="@id/distance" />
+                <TextView
+                    android:id="@+id/ascendValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="value"
+                    app:layout_constraintStart_toStartOf="@id/ascend"
+                    app:layout_constraintTop_toBottomOf="@id/ascend" />
+
+                <ImageView
+                    android:id="@+id/descentIcon"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/ic_summary_descent"
+                    app:backgroundTint="@color/primary"
+                    app:layout_constraintStart_toEndOf="@id/ascend"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/descent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:text="Descent"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@id/descentIcon"
+                    app:layout_constraintStart_toEndOf="@id/descentIcon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/descentValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingLeft="8dp"
+                    android:text="value"
+                    app:layout_constraintStart_toStartOf="@id/descent"
+                    app:layout_constraintTop_toBottomOf="@id/descent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
