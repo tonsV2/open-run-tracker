@@ -4,8 +4,8 @@ Open source run tracker build for fun... https://play.google.com/store/apps/deta
 # Features
 * Start/stop tracking
 * Show a list of previous runs
-** Export a run as GPX
-** Delete
+  * Export a run as GPX
+  * Delete
 
 # Development Setup
 `app/src/main/res/values/google_maps_api_key.xml` should be populated with a valid Google Maps API key. Same goes for `app/src/release/res/values/google_maps_api_key.xml`
