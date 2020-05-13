@@ -1,7 +1,13 @@
 # Open Run Tracker
-Open source run tracker build for fun...
+Open source run tracker build for fun... https://play.google.com/store/apps/details?id=dk.fitfit.runtracker
 
-# Setup
+# Features
+* Start/stop tracking
+* Show a list of previous runs
+** Export a run as GPX
+** Delete
+
+# Development Setup
 `app/src/main/res/values/google_maps_api_key.xml` should be populated with a valid Google Maps API key. Same goes for `app/src/release/res/values/google_maps_api_key.xml`
 
 # TODO
@@ -26,7 +32,6 @@ Open source run tracker build for fun...
 ** Run done stats... Avg. speed, height meters, etc.
 ** Over time stats... Fastest 1k, 3k, 5k, etc. Longest run
 ** Visual stats... Graphs
-* Fix duplicated queries - https://github.com/tonsV2/run-tracker/blob/master/app/src/main/java/dk/fitfit/runtracker/data/db/LocationDao.kt
 
 # Inspiration
 * https://github.com/android/location-samples/tree/master/LocationUpdatesBackgroundKotlin
