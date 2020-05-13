@@ -3,6 +3,8 @@ Open source run tracker build for fun... https://play.google.com/store/apps/deta
 
 # Features
 * Start/stop tracking
+* Show run summary
+* Live run map
 * Show a list of previous runs
   * Export a run as GPX
   * Delete
