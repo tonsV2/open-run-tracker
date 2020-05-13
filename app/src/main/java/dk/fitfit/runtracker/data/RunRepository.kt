@@ -10,4 +10,6 @@ class RunRepository(private val runDao: RunDao) {
     fun getLiveRun(runId: Long): LiveData<RunEntity> = runDao.getLiveRun(runId)
 
     fun update(run: RunEntity) = runDao.update(run)
+
+    fun delete(runId: Long) = runDao.delete(runId)
 }

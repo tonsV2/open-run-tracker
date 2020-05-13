@@ -26,4 +26,7 @@ interface RunDao {
 
     @Delete
     fun delete(runEntity: RunEntity)
+
+    @Query("DELETE FROM RunEntity WHERE id = :runId")
+    fun delete(runId: Long)
 }

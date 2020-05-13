@@ -64,25 +64,43 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
 
     private fun itemLongClick(run: RunEntity) {
         val runId = run.id
-        val items = arrayOf<CharSequence>("Export run as GPX file")
+        val items = arrayOf<CharSequence>("Delete", "Export as GPX file")
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.setItems(items) { _, item ->
-            CoroutineScope(IO).launch {
-                val locations = locationRepository.getLocations(runId)
-                val file = gpxWriter.toFile(requireContext().cacheDir, "exported_$runId.gpx", locations)
-                val uri = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext.packageName + ".provider", file)
-
-                val shareIntent = ShareCompat.IntentBuilder.from(activity as Activity).intent.apply {
-                    action = ACTION_SEND
-                    putExtra(EXTRA_STREAM, uri)
-                    type = "application/gpx+xml"
-                    addFlags(FLAG_GRANT_READ_URI_PERMISSION)
-                    setDataAndType(uri, type)
-                }
-
-                startActivity(createChooser(shareIntent, "resources.getText(R.string.send_to)"))
+            when(item) {
+                0 -> deleteRun(runId)
+                1 -> shareAsGpx(runId)
+                else -> throw RuntimeException("Bad select...")
             }
         }
         builder.show()
+    }
+
+    private fun shareAsGpx(runId: Long) {
+        CoroutineScope(IO).launch {
+            val locations = locationRepository.getLocations(runId)
+            val file = gpxWriter.toFile(requireContext().cacheDir, "exported_$runId.gpx", locations)
+            val uri = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext.packageName + ".provider", file)
+
+            val shareIntent = ShareCompat.IntentBuilder.from(activity as Activity).intent.apply {
+                action = ACTION_SEND
+                putExtra(EXTRA_STREAM, uri)
+                type = "application/gpx+xml"
+                addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+                setDataAndType(uri, type)
+            }
+
+            startActivity(createChooser(shareIntent, "resources.getText(R.string.send_to)"))
+        }
+    }
+
+    private fun deleteRun(runId: Long) {
+        AlertDialog.Builder(context)
+            .setMessage("Confirm deletion?")
+            .setPositiveButton(android.R.string.yes) { _, _ ->
+                runListViewModel.delete(runId)
+            }
+            .setNegativeButton(android.R.string.no, null)
+            .show()
     }
 }
