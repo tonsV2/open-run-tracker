@@ -21,3 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class android.arch.** { *; }
+
+# The following rules are needed to make JPX work
+-keep class javax.xml.stream.** { *; }
+-keep class com.bea.xml.stream.** { *; }
