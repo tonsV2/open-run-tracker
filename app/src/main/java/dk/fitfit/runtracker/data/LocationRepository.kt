@@ -47,7 +47,7 @@ class LocationRepository(
 
         run.distance = distance
 
-        run.ascend = routeUtils.calculateAscend(locations)
+        run.ascent = routeUtils.calculateascent(locations)
         run.descent = routeUtils.calculateDescent(locations)
 
         runDao.update(run)

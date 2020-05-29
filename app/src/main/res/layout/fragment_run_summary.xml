@@ -152,31 +152,31 @@
                 app:layout_constraintTop_toBottomOf="@id/cardviewLayout">
 
                 <ImageView
-                    android:id="@+id/ascendIcon"
+                    android:id="@+id/ascentIcon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:background="@drawable/ic_summary_ascend"
+                    android:background="@drawable/ic_summary_ascent"
                     app:backgroundTint="@color/primary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/ascend"
+                    android:id="@+id/ascent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:paddingLeft="8dp"
                     android:paddingEnd="8dp"
                     android:paddingRight="8dp"
-                    android:text="Ascend"
+                    android:text="Ascent"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/primary_text"
                     android:textStyle="bold"
-                    app:layout_constraintLeft_toRightOf="@id/ascendIcon"
-                    app:layout_constraintStart_toEndOf="@id/ascendIcon" />
+                    app:layout_constraintLeft_toRightOf="@id/ascentIcon"
+                    app:layout_constraintStart_toEndOf="@id/ascentIcon" />
 
                 <TextView
-                    android:id="@+id/ascendValue"
+                    android:id="@+id/ascentValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="8dp"
@@ -184,8 +184,8 @@
                     android:paddingEnd="8dp"
                     android:paddingRight="8dp"
                     android:text="value"
-                    app:layout_constraintStart_toStartOf="@id/ascend"
-                    app:layout_constraintTop_toBottomOf="@id/ascend" />
+                    app:layout_constraintStart_toStartOf="@id/ascent"
+                    app:layout_constraintTop_toBottomOf="@id/ascent" />
 
                 <ImageView
                     android:id="@+id/descentIcon"
@@ -193,7 +193,7 @@
                     android:layout_height="32dp"
                     android:background="@drawable/ic_summary_descent"
                     app:backgroundTint="@color/primary"
-                    app:layout_constraintStart_toEndOf="@id/ascend"
+                    app:layout_constraintStart_toEndOf="@id/ascent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

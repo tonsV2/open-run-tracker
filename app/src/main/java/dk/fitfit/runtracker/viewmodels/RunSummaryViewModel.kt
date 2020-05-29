@@ -25,7 +25,7 @@ class RunSummary(
     val duration: Duration,
     val distance: Double,
 
-    var ascend: Double,
+    var ascent: Double,
     var descent: Double,
 
     val minSpeed: Float,
@@ -50,7 +50,7 @@ class RunSummaryViewModel(private val runRepository: RunRepository, private val 
 
             val startDateTime: LocalDateTime = run.startDateTime
 
-            val ascend: Double = run.ascend ?: 0.0
+            val ascent: Double = run.ascent ?: 0.0
             val descent: Double = run.descent ?: 0.0
 
             val distanceMeters = run.distance ?: 0.0
@@ -72,7 +72,7 @@ class RunSummaryViewModel(private val runRepository: RunRepository, private val 
                 startDateTime,
                 run.duration(),
                 distanceMeters,
-                ascend,
+                ascent,
                 descent,
                 minSpeed,
                 avgSpeed,

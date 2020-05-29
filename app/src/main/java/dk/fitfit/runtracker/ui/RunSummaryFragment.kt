@@ -27,7 +27,7 @@ class RunSummaryFragment : MapFragment(R.layout.fragment_run_summary) {
             started.text = DateTimeFormatter.RFC_1123_DATE_TIME.format(it.startDateTime.atZone(ZoneId.systemDefault()))
             durationValue.text = it.duration.toHHMMSS()
             distanceValue.text = "%.2f km".format(it.distance.div(1_000))
-            ascendValue.text = "%d m".format(it.ascend.toInt())
+            ascentValue.text = "%d m".format(it.ascent.toInt())
             descentValue.text = "%d m".format(it.descent.toInt())
         }
 

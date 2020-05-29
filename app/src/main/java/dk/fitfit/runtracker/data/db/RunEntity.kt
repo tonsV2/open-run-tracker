@@ -11,7 +11,7 @@ data class RunEntity(
     var endDataTime: LocalDateTime? = null,
     var distance: Double? = null,
     var descent: Double? = null,
-    var ascend: Double? = null,
+    var ascent: Double? = null,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
 )
 

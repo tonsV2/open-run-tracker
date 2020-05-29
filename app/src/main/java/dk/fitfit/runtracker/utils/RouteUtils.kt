@@ -23,7 +23,7 @@ class RouteUtils {
             .sum()
     }
 
-    fun calculateAscend(locations: List<LocationEntity>): Double = IntStream
+    fun calculateascent(locations: List<LocationEntity>): Double = IntStream
         .range(0, locations.size - 1)
         .mapToDouble { i ->
             val altitudeDelta = locations[i].altitude - locations[i + 1].altitude
