@@ -18,6 +18,7 @@ Open source run tracker build for fun... https://play.google.com/store/apps/deta
 ** If background GPS isn't select show message that it's important
 * Create dedicated MapLocationViewModel... Only updateRunId method and locations
 * Detect GPS single
+* Detect if battery optimization is enabled
 * Delete from history
 * Show notification when app isn't in focus
 * Settings
