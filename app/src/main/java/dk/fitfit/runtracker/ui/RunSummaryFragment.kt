@@ -6,7 +6,6 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import dk.fitfit.runtracker.R
-import dk.fitfit.runtracker.data.db.duration
 import dk.fitfit.runtracker.ui.exception.RunIdNotDefinedException
 import dk.fitfit.runtracker.utils.toHHMMSS
 import kotlinx.android.synthetic.main.fragment_run_summary.*
@@ -16,18 +15,20 @@ import java.time.format.DateTimeFormatter
 class RunSummaryFragment : MapFragment(R.layout.fragment_run_summary) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.title = getString(R.string.run_summary_fragment_label)
+        requireActivity().title = getString(R.string.run_summary_fragment_label)
 
-        val runId = arguments?.getLong(EXTRA_ID)
-        if (runId == null || runId == 0L) throw RunIdNotDefinedException()
+        val runId = requireArguments().getLong(EXTRA_ID)
+        if (runId == 0L) throw RunIdNotDefinedException()
 
-        runSummaryViewModel.getRun(runId).observe(viewLifecycleOwner) {
-            timeOfDay.text = "${dayTimeString(it.startDateTime.hour)} run"
+        runSummaryViewModel.loadSummary(runId)
+
+        runSummaryViewModel.summary.observe(viewLifecycleOwner) {
+            timeOfDay.text = "%s run".format(dayTimeString(it.startDateTime.hour))
             started.text = DateTimeFormatter.RFC_1123_DATE_TIME.format(it.startDateTime.atZone(ZoneId.systemDefault()))
-            durationValue.text = it.duration().toHHMMSS()
-            distanceValue.text = "%.2f km".format(it.distance?.div(1_000))
-            ascendValue.text = "%d m".format(it.ascend?.toInt())
-            descentValue.text = "%d m".format(it.descent?.toInt())
+            durationValue.text = it.duration.toHHMMSS()
+            distanceValue.text = "%.2f km".format(it.distance.div(1_000))
+            ascendValue.text = "%d m".format(it.ascend.toInt())
+            descentValue.text = "%d m".format(it.descent.toInt())
         }
 
         fullscreenButton.setOnClickListener {

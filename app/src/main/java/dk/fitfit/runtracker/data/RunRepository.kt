@@ -7,9 +7,7 @@ import dk.fitfit.runtracker.data.db.RunEntity
 class RunRepository(private val runDao: RunDao) {
     fun getRuns(): LiveData<List<RunEntity>> = runDao.getRuns()
 
-    fun getLiveRun(runId: Long): LiveData<RunEntity> = runDao.getLiveRun(runId)
-
-    fun update(run: RunEntity) = runDao.update(run)
+    fun getRun(runId: Long): RunEntity = runDao.getRun(runId)
 
     fun delete(runId: Long) = runDao.delete(runId)
 }
