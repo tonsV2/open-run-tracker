@@ -70,7 +70,6 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
             when(item) {
                 0 -> deleteRun(runId)
                 1 -> shareAsGpx(runId)
-                else -> throw RuntimeException("Bad select...")
             }
         }
         builder.show()
