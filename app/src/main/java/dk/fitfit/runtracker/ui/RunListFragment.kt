@@ -64,7 +64,7 @@ class RunListFragment : Fragment(R.layout.fragment_run_list) {
 
     private fun itemLongClick(run: RunEntity) {
         val runId = run.id
-        val items = arrayOf<CharSequence>("Delete", "Export as GPX file")
+        val items = arrayOf("Delete", "Export as GPX file")
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.setItems(items) { _, item ->
             when(item) {
